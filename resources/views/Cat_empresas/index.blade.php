@@ -1,10 +1,6 @@
 @extends('layout')
 @section('contenido')
-@if(session('succes'))
-<div class="alert alert-success" >
-{{session('succes')}}
-</div>
-@endif
+
 <section class="content-header">
   <h1>
     Categorías registradas
@@ -17,14 +13,19 @@
   </ol>
 </section>
 <section class="content">
+    @if(session('succes'))
+        <div class="alert alert-success" id="success-alert">
+        {{session('succes')}}
+        </div>
+    @endif
     <div class="box">
       <div class="box-header">
         <h3 class="box-title">Datos</h3>
-        <input type ='button' class="btn btn-primary btn-sm pull-right" 
+        <input type ='button' class="btn btn-primary btn-sm pull-right"
          value = 'Agregar categoría' onclick="location.href = '{{ route ('Cat_Empresas.vistaCrear') }}'"/>
       </div>
         <div class="box-body">
-         
+
 
           <table id="example1" class="table table-bordered table-striped">
             <thead>
@@ -44,15 +45,15 @@
                 </td>
             <td>{{$categoria->DETALLE}}</td>
             <td>{{ $categoria->FOTO }}</td>
-            <td><a href=" {{route('editarCat',$categoria->IDCATEGORIA)}}"> 
+            <td><a href=" {{route('editarCat',$categoria->IDCATEGORIA)}}">
             <span name="ID" class="btn btn-primary btn-xs	glyphicon glyphicon-edit"></span></a>
-            <a  href = " {{route('eliminarCat',$categoria->IDCATEGORIA)}}"> 
+            <a  href = " {{route('eliminarCat',$categoria->IDCATEGORIA)}}">
             <span   class = "btn btn-danger btn-xs glyphicon glyphicon-trash"></span> </a>
-                       </td>    
-          </tr> 
+                       </td>
+          </tr>
 
 
-            @endforeach           
+            @endforeach
           </table>
         </div>
         <!-- /.box-body -->

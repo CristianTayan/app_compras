@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 //CATEGORIAS
 Route::post( 'registrar_Cat_Empresas', 'API\CatEmpresasController@registrar_Cat_Empresas' );
 Route::post( 'actualizar_Cat_Empresas', 'API\CatEmpresasController@actualizar_Cat_Empresas' );
-Route::get( 'get_categoriasEmpresas', 'API\CatEmpresasController@get_categoriasEmpresas' );
+Route::get( 'get_categorias', 'API\CatEmpresasController@get_categoriasEmpresas' );
 Route::get( 'listar_nombres', 'API\CatEmpresasController@listar_nombres' );
 Route::get( 'buscar_categoria/{NOMBRE}', 'API\CatEmpresasController@buscar_categoria' );
 
@@ -31,7 +31,7 @@ Route::get( 'cambiar_estado_empresas/{nombre}', 'API\EmpresasController@cambiar_
 
 //CLASIFICACIONES ES DE LA TABLA CAT_PRODUCTOS
 Route::post( 'registrar_clasificacion', 'API\ClasificacionController@registrar_clasificacion' );
-Route::get( 'get_clasificacion', 'API\ClasificacionController@get_clasificacion' );
+Route::get( 'get_clasificacion/{idempresa}', 'API\ClasificacionController@get_clasificacion' );
 Route::post( 'actualizar_clasificacion', 'API\ClasificacionController@actualizar_clasificacion' );
 //Busca las categorias que tiene la empresa por ID de la empresa
 Route::get( 'cat_prod_empresa/{idEmpresa}', 'API\ClasificacionController@cat_prod_empresa' );
@@ -73,7 +73,7 @@ Route::get( 'productos_lista', 'API\VistasController@productos_lista' );
 //PRODUCTOS
 Route::post( 'registrar_productos', 'API\ProductosController@registrar_productos' );
 Route::post( 'actualizar_productos', 'API\ProductosController@actualizar_productos' );
-Route::get( 'get_productos', 'API\ProductosController@get_productos' );
+Route::get( 'get_productos/{idempresa}', 'API\ProductosController@get_productos' );
 //Muestra los productos de acuerdo a la clasificacion que tiene la empresa
 Route::get( 'productos_clasificacion/{clasificacion}', 'API\ProductosController@productos_clasificacion' );
 Route::get( 'cambiar_estado_producto/{idProd}', 'API\ProductosController@cambiar_estado_producto' );

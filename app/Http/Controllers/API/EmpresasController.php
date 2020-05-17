@@ -17,7 +17,7 @@ class EmpresasController extends Controller {
         $DIRECCION = $request->DIRECCION;
         $CALLE_PRINCIPAL = $request->CALLE_PRINCIPAL;
         $CALLE_SECUNDARIA = $request->CALLE_SECUNDARIA;
-        
+
         $FOTO = $request->FOTO;
 
         $nombre_existe = DB::table( 'empresa' )->where( 'NOMBRE', $NOMBRE )->get();
@@ -96,7 +96,7 @@ class EmpresasController extends Controller {
     }
 
     public function buscar_empresa( $nombreEmpresa ) {
-        $empresa = DB::table( 'empresa' )->where( 'NOMBRE', $nombreEmpresa )->get();
+        $empresa = DB::table( 'view_empresa_categoria' )->where( 'IDEMPRESA', $nombreEmpresa )->get();
         if ( count( $empresa ) != 0 ) {
             return response()->json( $empresa, 200 );
         } else {
@@ -118,7 +118,7 @@ class EmpresasController extends Controller {
     }
 
     public function empresas_por_categoria( $categoria ) {
-        $nombres = DB::table( 'empresa' )->where( 'IDCATEGORIA', $categoria )->get();
+        $nombres = DB::table( 'view_empresa_categoria' )->where( 'IDCATEGORIA', $categoria )->get();
         if ( count( $nombres ) != 0 ) {
             return response()->json( $nombres, 200 );
         } else {

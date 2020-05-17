@@ -33,6 +33,7 @@ class EmpresasController extends Controller {
         $FOTO = $request->FOTO;
         $FOTO = 'empresa/'.$FOTO;
 
+
         $nombre_existe = DB::table( 'empresa' )->where( 'NOMBRE', $NOMBRE )->get();
         if ( count( $nombre_existe ) == 0 ) {
 
@@ -47,7 +48,6 @@ class EmpresasController extends Controller {
                     'CALLE_PRINCIPAL' => $CALLE_PRINCIPAL,
                     'CALLE_SECUNDARIA' => $CALLE_SECUNDARIA,
                     'FOTO' => $FOTO
-
                 ]
             );
             $mensaje = ['message' => 'Se registro exitosamente'];

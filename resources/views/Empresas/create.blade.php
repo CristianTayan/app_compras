@@ -4,14 +4,14 @@
     <div class="row">
             <form method="get" action="{{ route('Empresas.crear')}}">
                 {{ csrf_field() }}
-            
-                <div class="col-md-6"> 
+
+                <div class="col-md-6">
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title">Ingrese los datos</h3>
                         </div>
                         <div class="box-body">
-                            
+
                             <div class="input-group">
                             </div>
                             <br>
@@ -29,21 +29,21 @@
                          @foreach($categorias as $cat)
                               <option value="{{$cat->IDCATEGORIA}}">{{$cat->NOMBRE}}</option>
                           @endforeach
-                           </select>  
+                           </select>
                             <label>Nombre</label>
                             <div class="input-group">
                              <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                              <input 
-                              type="text" 
+                              <input
+                              type="text"
                               name="NOMBRE"
-                              pattern= "^[a-zA-Z ]*$" 
-                              class="form-control" 
+                              pattern= "^[a-zA-Z ]*$"
+                              class="form-control"
                               placeholder="Nombre"
                               title="El nombre no puede contener números">
                             </div>
                             <br>
                             <label>Coordenada en x</label>
-                            <div class="input-group"> 
+                            <div class="input-group">
                               <span class="input-group-addon"><i class="fa fa-map-signs"></i></span>
                               <input type="text" name="COORDENADAX"  class="form-control" placeholder="Correo">
                             </div>
@@ -51,11 +51,11 @@
                             <label>Coordenada y</label>
                             <div class="input-group">
                              <span class="input-group-addon"><i class="fa fa-map-signs"></i></span>
-                              <input 
+                              <input
                               type="text"
-                              name="COORDENADAY" 
-                              
-                              class="form-control" 
+                              name="COORDENADAY"
+
+                              class="form-control"
                             >
                             </div>
                             <br>
@@ -65,7 +65,7 @@
                               <input type="TEXT" name="DIRECCION"  class="form-control" >
                             </div>
                             <br>
-                            
+
                             <label>Calle principal</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-street-view"></i></span>
@@ -78,20 +78,20 @@
                                 <input type="text" name="CALLE_SECUNDARIA"  class="form-control">
                             </div>
                             <br>
-                            <label for="exampleInputFile"  >FOTO</label>
+                            <label for="exampleInputFile">FOTO</label>
                            <input type="file" name="FOTO">
-                            
+
 
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-primary">Agregar</button>
-                           </div>  
+                           </div>
 
                         </div>
 
                     </div>
-                    
+
                 </div>
-              
+
             </form>
 
             <div class="col-md-6">
@@ -102,7 +102,7 @@
                             <h3 class="box-title">Registre el horario</h3>
                         </div>
                         <div class="box-body">
-                            
+
                             <div class="input-group">
                             cargo el id de la empresa ingresada escondido jeje
                             </div>
@@ -120,7 +120,7 @@
                                    <option >Domingo</option>
                                      </select>
                                 </div>
-                               
+
                                  <div class="col-xs-3">
                                     <label for="exampleInputEmail1">Dia fin</label>
                                     <select  name="DIA_FIN" class="form-control">
@@ -145,7 +145,7 @@
                                    <option >Domingo</option>
                                      </select>
                                 </div>
-                               
+
                                  <div class="col-xs-3">
                                     <label for="exampleInputEmail1">Hora fin</label>
                                     <select  name="HORA_FIN" class="form-control">
@@ -159,26 +159,25 @@
                                      </select>
                                  </div>
                             </div>
-                            
-                              
-                             
-                              
+
+
+
+
 
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-primary">Agregar</button>
-                           </div>  
+                           </div>
 
                         </div>
 
                     </div>
-                    
-                
-              
-            </form> 
+
+
+
+            </form>
             </div>
         </div>
-        
-        </section>     
+
+        </section>
 
 @endsection
-  

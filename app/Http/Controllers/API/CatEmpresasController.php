@@ -77,7 +77,7 @@ class CatEmpresasController extends Controller {
     public function buscar_categoria( $NOMBRE ) {
 
         $existe = DB::table( 'cat_empresas' )
-        ->where( 'NOMBRE', $NOMBRE )->get();
+        ->where( 'IDCATEGORIA', $NOMBRE )->get();
         if ( count( $existe ) != 0 ) {
             return response()->json( $existe, 200 );
         } else {

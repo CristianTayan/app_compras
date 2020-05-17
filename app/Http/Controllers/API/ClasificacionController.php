@@ -25,8 +25,8 @@ class ClasificacionController extends Controller {
         return response()->json( $mensaje, 200 );
     }
 
-    public function get_clasificacion() {
-        $clasificacion = DB::table( 'cat_productos' )->orderBy( 'NOMBRE' )->get();
+    public function get_clasificacion($idempresa) {
+        $clasificacion = DB::table( 'cat_productos' )->where('IDEMPRESA', $idempresa)->orderBy( 'NOMBRE' )->get();
         if ( count( $clasificacion ) != 0 ) {
             return response()->json( $clasificacion, 200 );
         } else {

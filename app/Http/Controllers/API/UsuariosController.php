@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Nexmo\Laravel\Facade\Nexmo;
 use Carbon\Carbon;
 use Twilio\Rest\Client;
- 
+
 
 class UsuariosController extends Controller {
     public function get_usuarios() {
@@ -22,15 +22,15 @@ class UsuariosController extends Controller {
     }
 
     public function registrar_usuario( Request $request ) {
-        $NOMBRE = $request->NOMBRE;
-        $CORREO = $request->CORREO;
-        $CELULAR = $request->CELULAR;
+        $NOMBRE = $request->nombre;
+        $CORREO = $request->correo;
+        $CELULAR = $request->celular;
         $CELULAR=substr($CELULAR, 1);
         $CELULAR='+593'.$CELULAR;
-        $CONTRASENA=base64_encode($request->CONTRASENA);
-        $TIPO_USUARIO = $request->TIPO_ESTADO;
-        $ESTADO = $request->ESTADO;
-        $SESION = $request->SESION;
+        $CONTRASENA=base64_encode($request->contrasena);
+        $TIPO_USUARIO = 'U';
+        $ESTADO = 'S';
+        $SESION = $request->correo;
         $VERIFICACION='N' ;
         $CREATED_AT=carbon::now();
         $account_sid = getenv("TWILIO_SID");
@@ -41,19 +41,19 @@ class UsuariosController extends Controller {
             $pattern = '1234567890';
             $max = strlen($pattern)-1;
             for($i=0;$i < 6;$i++) $Num .= $pattern{mt_rand(0,$max)};
-            
+
              $num=$Num;
-                
+
         $CODIGO=$num;
-        
+
         $correo_existe = DB::table( 'usuarios' )->where( 'CORREO', $CORREO )->get();
         $celular_existe = DB::table( 'usuarios' )->where( 'CELULAR', $CELULAR )->get();
 
-        if ( filter_var( $CORREO, FILTER_VALIDATE_EMAIL ) ) {
+        if ( $CORREO ) {
             if ( count( $correo_existe ) == 0 ) {
                 if ( count( $celular_existe ) == 0 ) {
 
-                    $client->messages->create($CELULAR, 
+                    $client->messages->create($CELULAR,
                     ['from' => $twilio_number, 'body' =>'Código de verificación app_compras'.$CODIGO ] );
 
                     DB::table( 'usuarios' )->insert(
@@ -72,8 +72,6 @@ class UsuariosController extends Controller {
                         ]
                     );
 
-                    
-                    
                     $mensaje = ['message' => 'Usuario registrado'];
                     return response()->json( $mensaje, 200 );
                 } else {
@@ -90,21 +88,21 @@ class UsuariosController extends Controller {
         }
     }
 
-    
+
     public function verificar_usuario(Request $request){
-        $IDUSUARIO=$request->IDUSUARIO;
+        $CORREO=$request->CORREO;
         $CODIGO=$request->CODIGO;
         $confirmar= DB::table('usuarios')
-        ->where('IDUSUARIO',$IDUSUARIO)
+        ->where('CORREO',$CORREO)
         ->where('CODIGO',$CODIGO)->get();
-        
+
         if(count($confirmar)!=0){
             DB::table( 'usuarios' )
-            ->where( 'IDUSUARIO', $IDUSUARIO )
+            ->where( 'CORREO', $CORREO )
             ->update(
                 [
                     'VERIFICACION' => 'S'
-                    
+
                 ]
             );
             $mensaje = ['message' => 'Usuario Confirmado'];
@@ -112,8 +110,9 @@ class UsuariosController extends Controller {
         } else{
             $mensaje = ['message' => 'Código no válido'];
             return response()->json( $mensaje, 400 );
-        }   
+        }
     }
+
     public function enviar_sms($IDUSUARIO){
 
         $account_sid = getenv("TWILIO_SID");
@@ -127,7 +126,7 @@ class UsuariosController extends Controller {
             $CELULAR=$d->CELULAR;
         }
         if(count($Datos)!=0){
-            $client->messages->create($CELULAR, 
+            $client->messages->create($CELULAR,
             ['from' => $twilio_number, 'body' =>'Código de verificación app_compras'.$CODIGO ] );
             $mensaje = ['message' => 'Mensaje enviado'];
             return response()->json( $mensaje, 200 );
@@ -136,7 +135,7 @@ class UsuariosController extends Controller {
             return response()->json( $mensaje, 400 );
         }
     }
-    
+
 
     public function actualizar_usuario( Request $request ) {
         $nombre = $request->nombre;
@@ -158,7 +157,7 @@ class UsuariosController extends Controller {
             $mensaje = ['message' => 'El número celular ya se encuentra registrado'];
         return response()->json( $mensaje, 400 );
         }
-        
+
     }
     public function buscar_correo( $correo ) {
         $usuario = DB::table( 'usuarios' )->where( 'correo', $correo )->get();
@@ -168,19 +167,19 @@ class UsuariosController extends Controller {
             $mensaje = ['message' => 'No se encuentra usuarios registrados con ese correo'];
             return response()->json( $mensaje, 400 );
         }
-        
+
     }
-   
+
     public function cambiar_estado_usuario ($correo){
 
     $estado=DB::table( 'usuarios' )->where( 'correo', $correo )->where( 'estado', 's' )->get();
-    
+
 
     if(count($estado)!=0){
         DB::table( 'usuarios' )
         ->where( 'correo', $correo )
         ->update( ['estado' => 'n'
-        
+
         ] );
         $mensaje = ['message' => 'Cambio de estado exitoso'];
             return response()->json( $mensaje, 200 );
@@ -188,7 +187,7 @@ class UsuariosController extends Controller {
         DB::table( 'usuarios' )
         ->where( 'correo', $correo )
         ->update( ['estado' => 's'
-        
+
         ] );
         $mensaje = ['message' => 'Cambio de estado exitoso'];
         return response()->json( $mensaje, 200 );

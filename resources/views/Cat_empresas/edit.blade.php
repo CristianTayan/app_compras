@@ -4,7 +4,7 @@
 <section class="content-header">
     <div class="row">
         <div class="form-group col-xs-6">
-        <form role="form" method="get" action="{{ route ('Cat_Empresas.registrar') }}">
+        <form role="form" method="get" action="{{ route ('editarCategoria') }}">
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Actualizando datos de {{ $cat->NOMBRE}} 

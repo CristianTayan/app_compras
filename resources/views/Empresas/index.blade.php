@@ -40,29 +40,47 @@
               <th>Categoría</th>
               <th>Dirección</th>
               <th>Opciones</th>
+              <th>Estado</th>
 
               
             </tr>
             </thead>
+            @foreach ($empresas as $empresa)
             <tbody>
-              @foreach ($empresas as $empresa)
+              
               <tr>
               <td>{{ $empresa->IDEMPRESA}}</td>
-                  <td>{{$empresa->NOMBRE}} </td>  
-                  <td>{{$empresa->CATEGORIA}}</td>
-              <td>{{ $empresa->DIRECCION }}</td>
-              
+                  <td>{{$empresa->NOMBRE}} </td>
+                  @foreach($categorias as $categoria)
+                  @if($categoria->IDCATEGORIA == $empresa->IDCATEGORIA)
+                   <td>{{$categoria->NOMBRE}}</td>
+                   @endif
+                  @endforeach
+                  <td>{{ $empresa->DIRECCION }}</td>
               <td>
               <a href="{{route('Empresas.vistaEditar',$empresa->IDEMPRESA)}}"> 
                   <span name="ID" class="btn btn-primary btn-xs	glyphicon glyphicon-edit"></span></a>
-                  <a  href = "{{route('Empresas.eliminar',$empresa->IDEMPRESA)}}"> 
+              <a  href = "{{route('Empresas.eliminar',$empresa->IDEMPRESA)}}"> 
                   <span   class = "btn btn-danger btn-xs glyphicon glyphicon-trash" 
-                  onclick="return confirm('Borrar.{{$empresa->NOMBRE}}');"></span> </a>
-                             
+                  onclick="return confirm('Borrar.{{$empresa->NOMBRE}}');"></span> </a> 
+              <td>
+                @if($empresa->ESTADO == "S")
+                <a  href = ""> 
+                  <span   class = "btn btn-success btn-xs glyphicon glyphicon-ok" 
+                ></span> </a>
+                
+                @else
+                <a  href = "">
+                <span   class = "btn btn-warning btn-xs glyphicon glyphicon-remove" 
+                ></span> </a>
+               
+               @endif  
                 </td>
+              </td>
       
                 </tr> 
               @endforeach       
+            </tbody>
           </table>
         </div>
         <!-- /.box-body -->

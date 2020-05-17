@@ -22,8 +22,9 @@ class ImagenesController extends Controller {
         return redirect( route( 'Imagenes.indexE' ) )->with( 'succes', 'Imagen verificada' );
     }
     public function listar_productos() {
-        $productos = DB::table( 'productos' )->where( 'VERIFICAR_IMG', 'N' )->get();
-        return view( 'Imagenes.index', compact( 'productos' ) );
+        $productos = DB::table( 'productos' )->where( 'VERIFICAR_IMG', 'N' )->orderBy('IDEMPRESA')->get();
+        $empresas = DB::table('empresa')->get();
+        return view( 'Imagenes.index', compact( 'productos','empresas' ) );
     }
     public function verificar_imagen_P($IDPRODUCTO){
         DB::table('productos')

@@ -29,8 +29,9 @@
           <table id="example1" class="table table-bordered table-striped">
             <thead>
             <tr>
+              <th>Empresa</th>
               <th>Producto</th>
-              <th>Descripción</th>
+              
               <th>Imagen</th>
               <th>Verificar</th>
 
@@ -40,13 +41,20 @@
             <tbody>
             @foreach ($productos  as $producto)
             <tr>
-            <td>{{ $producto->NOMBRE}}</td>
-            <td>{{ $producto->DESCRIPCION}}</td>
-            <td><img src="{{asset($producto->FOTO)}}"></td>
+              @foreach($empresas as $empresa)
+              @if($producto->IDEMPRESA == $empresa->IDEMPRESA)
+              <td>{{$empresa->NOMBRE}}</td>
+              @endif
+              @endforeach
+              <td>{{ $producto->NOMBRE}}</td>
+
+            
+
+            <td><img src="{{asset($producto->FOTO)}}" style="width: 120px; height: 100px; object-fit: cover"></td>
             
             <td><a href="{{route('Imagenes.verificarProducto', $producto->IDPRODUCTO)}}">
               <span class="btn btn-primary btn-xs	glyphicon glyphicon-ok"></span></a>
-            
+            </td>
               </tr> 
             @endforeach           
           </table>

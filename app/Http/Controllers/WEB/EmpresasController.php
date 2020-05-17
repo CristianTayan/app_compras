@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class EmpresasController extends Controller {
     public function index() {
-        $empresas = DB::table( 'view_empresa_categoria' )->get();
-        return view( 'Empresas.index', compact( 'empresas' ) );
+        $empresas = DB::table( 'empresa' )->get();
+        $categorias = DB::table('cat_empresas')->get();
+        
+        return view( 'Empresas.index', compact( 'empresas','categorias','direcciones' ) );
     }
 
     public function vistaCrear() {

@@ -42,10 +42,18 @@ Route::get('Empresa.index/listar','WEB\EmpresasController@editarEmpresa')->name(
 Route::get('registrarCatEmp/registrar','WEB\Cat_EmpresasController@registrarCat')->name('Cat_Empresas.registrar');
 Route::get('Cat_empresas.index/{ID}','WEB\Cat_EmpresasController@eliminarCategoria')->name('eliminarCat');
 Route::get('EditarCategoriaEmpresas/{ID}','WEB\Cat_EmpresasController@vistaEditarCat')->name('editarCat');
-Route::get('Editar','WEB\Cat_EmpresasController@editarCategoria')->name('editar');
+Route::get('/EditarCat/editar','WEB\Cat_EmpresasController@editarCategoria')->name('editarCategoria');
 Route::get('Cat_empresas/lista','WEB\Cat_EmpresasController@index')->name('categorias.index');
 Route::get('Cat_empresas.create/crear','WEB\Cat_EmpresasController@vistaCrear')->name('Cat_Empresas.vistaCrear');
 
+//Vistas Pedidos y detalles pedidos.
+Route::get('/Enviados/Pedidos','WEB\PedidoController@indexE')->name('pedidosE');
+Route::get('/Enproceso/Pedidos','WEB\PedidoController@indexP')->name('pedidosP');
+Route::get('/Entregados/Pedidos','WEB\PedidoController@indexF')->name('pedidosF');
+Route::get('/Anulados/Pedidos','WEB\PedidoController@indexA')->name('pedidosA');
+
+//Detalles pedido
+Route::get('/Detalles/Pedidos','WEB\DetallePedidoController@index')->name('detalleP');
 
 
 

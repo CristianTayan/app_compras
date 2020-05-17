@@ -30,7 +30,7 @@
         <tr>
         <td>{{ $empresa->NOMBRE}}</td>
         
-        <td><img src="{{asset($empresa->FOTO)}}"></td>
+        <td><img src="{{asset($empresa->FOTO)}}" style="width: 120px; height: 100px; object-fit: cover"></td>
         
         <td><a href="{{route('Imagenes.verificar', $empresa->IDEMPRESA)}}">
           <span class="btn btn-primary btn-xs	glyphicon glyphicon-ok"></span></a>

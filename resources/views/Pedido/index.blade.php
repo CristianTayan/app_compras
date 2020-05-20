@@ -44,24 +44,28 @@
             <tbody>
             @foreach ($pedidos as $pedido)         
               <tr>
-                @foreach ($usuarios as $usuario)
+           
+                @foreach($usuarios as $usuario)
                 @if($pedido->IDUSUARIO == $usuario->IDUSUARIO)
-              <td>{{ $usuario->NOMBRE}}</td>
+              <td>{{$usuario->NOMBRE}}</td>
               @endif
-              @endforeach
+              @endforeach  
               @foreach ($direcciones as $direccion)
               @if($pedido->IDDIRECCION == $direccion->IDDIRECCION)
                   <td>{{$direccion->DIRECCION}} </td>  
               @endif    
               @endforeach
+           
                   <td>{{$pedido->SUBTOTAL}}</td>
               <td>{{ $pedido->COSTO_ENVIO }}</td>
+              
               <td>{{$pedido->TOTAL}}</td>
               <td> {{$pedido->FECHA_CREACION}}</td>   
+
                 </tr> 
               
               @endforeach    
-                      
+              </tbody>
           </table>
         </div>
         <!-- /.box-body -->

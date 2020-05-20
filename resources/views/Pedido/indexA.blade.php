@@ -41,7 +41,7 @@
               
             </tr>
             </thead>
-            <tbody>
+         <tbody>
             @foreach ($pedidos as $pedido)         
               <tr>
                 @foreach ($usuarios as $usuario)
@@ -58,10 +58,10 @@
               <td>{{ $pedido->COSTO_ENVIO }}</td>
               <td>{{$pedido->TOTAL}}</td>
               <td> {{$pedido->FECHA_CREACION}}</td>   
-                </tr> 
+              </tr> 
               
               @endforeach    
-                      
+            </tbody>            
           </table>
         </div>
         <!-- /.box-body -->

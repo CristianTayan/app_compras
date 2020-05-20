@@ -40,10 +40,11 @@
             <tbody>
             @foreach ($det_pedido as $pedido)         
               <tr>
+                <td>{{$pedido->IDPEDIDO}}</td>
                 @foreach ($productos as $producto)
                 @if($pedido->ID_PRODUCTO == $producto->IDPRODUCTO)
               <td>{{ $producto->NOMBRE}}</td>
-              <td>{{$pedido->CANTIDAD}}</td>
+             
             
               @endif
               @endforeach

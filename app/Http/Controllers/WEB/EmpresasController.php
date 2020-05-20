@@ -10,8 +10,8 @@ class EmpresasController extends Controller {
     public function index() {
         $empresas = DB::table( 'empresa' )->get();
         $categorias = DB::table('cat_empresas')->get();
-        
-        return view( 'Empresas.index', compact( 'empresas','categorias','direcciones' ) );
+
+        return view( 'Empresas.index', compact( 'empresas','categorias' ) );
     }
 
     public function vistaCrear() {

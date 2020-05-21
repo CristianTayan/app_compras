@@ -31,7 +31,7 @@ Route::get('Imagenes.index/listarProductos','WEB\ImagenesController@listar_produ
 Route::get('Imagenes.index/{IDPRODUCTOS}/VerificarProducto','WEB\ImagenesController@verificar_imagen_P')->name('Imagenes.verificarProducto');
 
 //Empresas
-Route::get('Empresas.index/listarEmpresa','WEB\EmpresasController@index')->name('Empresas.index');
+Route::get('Empresas.index/listarEmpresas','WEB\EmpresasController@index')->name('Empresas.index');
 Route::get('Empresas.create/crear','WEB\EmpresasController@vistaCrear')->name('Empresas.vistaCrear');
 Route::get('Empresas.index/crear','WEB\EmpresasController@registrar')->name('Empresas.crear');
 Route::get('Empresas.index/{ID}','WEB\EmpresasController@eliminarEmpresas')->name('Empresas.eliminar');

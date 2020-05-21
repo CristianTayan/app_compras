@@ -21,8 +21,15 @@
     <div class="box">
       <div class="box-header">
         <h3 class="box-title">Datos</h3>
+{{-- <<<<<<< HEAD
         <input type ='button' class="btn btn-primary btn-sm pull-right"
          value = 'Agregar categoría' onclick="location.href = '{{ route ('Cat_Empresas.vistaCrear') }}'"/>
+======= --}}
+        <button class="btn btn-primary btn-sm pull-right"
+         value = 'Agregar categoría' onclick="location.href = '{{ route ('Cat_Empresas.vistaCrear') }}'">
+         Agregar categoría
+         <span class="glyphicon glyphicon-plus"></span></button>
+{{-- >>>>>>> master --}}
       </div>
         <div class="box-body">
 
@@ -44,6 +51,7 @@
                 <td>{{$categoria->NOMBRE}}
                 </td>
             <td>{{$categoria->DETALLE}}</td>
+{{-- <<<<<<< HEAD
             <td>{{ $categoria->FOTO }}</td>
             <td><a href=" {{route('editarCat',$categoria->IDCATEGORIA)}}">
             <span name="ID" class="btn btn-primary btn-xs	glyphicon glyphicon-edit"></span></a>
@@ -54,6 +62,20 @@
 
 
             @endforeach
+======= --}}
+            <td><img src="{{asset($categoria->FOTO)}}" style="width: 150px; height: 100px; object-fit: cover">
+                        </td>
+            <td><a href=" {{route('editarCat',$categoria->IDCATEGORIA)}}">
+            <span title="Actualizar registro" class="btn btn-primary btn-xs	glyphicon glyphicon-edit"></span></a>
+            <a  href = " {{route('eliminarCat',$categoria->IDCATEGORIA)}}">
+            <span title="Eliminar registro"  class = "btn btn-danger btn-xs glyphicon glyphicon-trash"></span> </a>
+                       </td>
+          </tr>
+
+
+            @endforeach
+            </tbody>
+{{-- >>>>>>> master --}}
           </table>
         </div>
         <!-- /.box-body -->

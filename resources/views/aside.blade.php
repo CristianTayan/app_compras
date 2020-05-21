@@ -66,6 +66,8 @@
 
       </li>
       <li class="{{ !Route::is('detalleP') ?: 'active'}}"><a href="{{Route('detalleP')}}"><i class="fa fa-building"></i> <span>Detalles Pedido</span></a></li>
+    <li class=""><a href="{{Route('probar')}}"><i class=""></i> <span>Productos</span></a></li>
+    
     </ul>
       <!-- /.sidebar-menu -->
     </section>

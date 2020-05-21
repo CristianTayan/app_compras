@@ -10,8 +10,6 @@
   {{session('eliminar')}}
     </div>
   @endif
-  
-
 <section class="content-header">
     <h1>
       Empresas registradas
@@ -27,20 +25,24 @@
     <div class="box">
         <div class="box-header">
           <h3 class="box-title">Datos</h3>
-          <input type ='button' class="btn btn-primary btn-sm pull-right" 
-           value = 'Agregar empresa' onclick="location.href = '{{ route('Empresas.vistaCrear') }}'"/>
+          <button class="btn btn-primary btn-sm pull-right" 
+          value = 'Agregar categoría' onclick="location.href = '{{ route('Empresas.vistaCrear') }}'">Agregar empresa
+          <span class="glyphicon glyphicon-plus"></span></button>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
           <table id="example1" class="table table-bordered table-striped">
             <thead>
             <tr>
-              <th>ID</th>
+              <th>Nro</th>
               <th>Nombre</th>
               <th>Categoría</th>
               <th>Dirección</th>
-              <th>Opciones</th>
+              <th>Horario</th>
               <th>Estado</th>
+              <th>Productos</th>
+              <th>Opciones</th>
+              
 
               
             </tr>
@@ -57,26 +59,51 @@
                    @endif
                   @endforeach
                   <td>{{ $empresa->DIRECCION }}</td>
+                  @foreach($horarios as $horario)
+                   @php
+                    $cont=0;
+                    @endphp
+                    @if ($empresa->IDEMPRESA == $horario->IDEMPRESA)
+                    <td>{{$horario->HORARIO_CONCAT}} </td>
+                    @php
+                    $cont=1;
+                    @endphp
+                    @break
+                     @endif
+                   @endforeach
+
+                   @if( $cont==0)
+                   <td><a href="{{route('Horarios.vistaCrearHorario',$empresa->IDEMPRESA)}}"> 
+                    Agregar</a>
+                   @endif
+                  <td>
+                    @if($empresa->ESTADO == "S")
+                    <a  href = "{{route('Empresas.cambiarEstadoEmpresa',$empresa->IDEMPRESA)}}"> 
+                      Activo
+                      <span  title="Cambiar estado a INACTIVO"  class = "fa fa-check" 
+                    ></span> </a>
+                    
+                    @else
+                    <a   style="color:rgb(248, 151, 131 );" title="Cambiar estado a ACTIVO" href = "{{route('Empresas.cambiarEstadoEmpresa',$empresa->IDEMPRESA)}}">
+                     Inactivo
+                      <span title="Cambiar estado a ACTIVO"  class = "fa fa-remove" 
+                      ></span> </a>
+                   @endif  
+                    </td>
+                  <td> Lista de productos
+                    <a href="{{route('productos.listar',$empresa->IDEMPRESA)}}"> 
+                      <span name="ID" title="Ver la lista de productos de la empresa" class = "btn btn-primary btn-xs glyphicon glyphicon-folder-open"> </span></a>
+
+                  </td>
+
               <td>
               <a href="{{route('Empresas.vistaEditar',$empresa->IDEMPRESA)}}"> 
-                  <span name="ID" class="btn btn-primary btn-xs	glyphicon glyphicon-edit"></span></a>
+                  <span title="Actualizar registro" class="btn btn-primary btn-xs	glyphicon glyphicon-edit"></span></a>
               <a  href = "{{route('Empresas.eliminar',$empresa->IDEMPRESA)}}"> 
-                  <span   class = "btn btn-danger btn-xs glyphicon glyphicon-trash" 
-                  onclick="return confirm('Borrar.{{$empresa->NOMBRE}}');"></span> </a> 
-              <td>
-                @if($empresa->ESTADO == "S")
-                <a  href = ""> 
-                  <span   class = "btn btn-success btn-xs glyphicon glyphicon-ok" 
-                ></span> </a>
-                
-                @else
-                <a  href = "">
-                <span   class = "btn btn-warning btn-xs glyphicon glyphicon-remove" 
-                ></span> </a>
-               
-               @endif  
-                </td>
-              </td>
+                  <span title="Eliminar registro"  class = "btn btn-danger btn-xs glyphicon glyphicon-trash" 
+                  onclick="return confirm('Borrar.{{$empresa->NOMBRE}}');"></span> </a>  </td>
+              
+             
       
                 </tr> 
               @endforeach       

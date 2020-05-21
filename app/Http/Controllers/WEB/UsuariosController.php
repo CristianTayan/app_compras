@@ -12,22 +12,27 @@ class UsuariosController extends Controller {
 
     public function listar_usuarios_U() {
         $usuarios = DB::table( 'usuarios' )->where( 'TIPO_USUARIO', 'U' )->get();
-        return view( 'Usuarios.index', compact( 'usuarios' ) );
+        $direcciones = DB::table( 'direcciones' )->get();
+        return view( 'Usuarios.index', compact( 'usuarios', 'direcciones' ) );
     }
 
     public function listar_usuarios_A() {
         $usuarios = DB::table( 'usuarios' )->where( 'TIPO_USUARIO', 'A' )->get();
-        return view( 'Usuarios.index', compact( 'usuarios' ) );
+        $direcciones = DB::table( 'direcciones' )->get();
+        return view( 'Usuarios.indexA', compact( 'usuarios', 'direcciones' ) );
+
     }
 
     public function listar_usuarios_p() {
         $usuarios = DB::table( 'usuarios' )->where( 'TIPO_USUARIO', 'P' )->get();
-        return view( 'Usuarios.index', compact( 'usuarios' ) );
+        $direcciones = DB::table( 'direcciones' )->get();
+        return view( 'Usuarios.indexP', compact( 'usuarios', 'direcciones' ) );
     }
 
     public function Usuarios_vista() {
         return view( 'Usuarios.create' );
     }
+
     public function Usuarios_vista_actualizar() {
 
         return view( 'Usuarios.edit' );
@@ -41,7 +46,7 @@ class UsuariosController extends Controller {
             $nombre = $tipo->TIPO_USUARIO;
         }
 
-        echo $nombre;
+        
 
         if ( $nombre == 'U' ) {
             DB::table( 'usuarios' )->where( 'IDUSUARIO', $IDUSUARIO )->delete();
@@ -82,25 +87,24 @@ class UsuariosController extends Controller {
         }
         $CONTRASENA = base64_encode( $request->CONTRASENA );
         $TIPO_USUARIO = $request->TIPO_USUARIO;
-        $ESTADO = 'S' ;
+        $ESTADO =  $request->ESTADO ;
         $SESION = 'sesion' ;
         $VERIFICACION = $request->VERIFICACION ;
         $CREATED_AT = carbon::now();
         $correo_existe = DB::table( 'usuarios' )->where( 'CORREO', $CORREO )->get();
-        $datos_repetidos=DB::table( 'usuarios' )
-        ->select('CELULAR','CORREO')
+        $datos_repetidos = DB::table( 'usuarios' )
+        ->select( 'CELULAR', 'CORREO' )
         ->where( 'IDUSUARIO', $IDUSUARIO )->get();
-        foreach($datos_repetidos as $dato){
-            $correo=$dato->CORREO;
-            $celular=$dato->CELULAR;
+        foreach ( $datos_repetidos as $dato ) {
+            $correo = $dato->CORREO;
+            $celular = $dato->CELULAR;
         }
-        
-        
+
         $celular_existe = DB::table( 'usuarios' )->where( 'CELULAR', $CELULAR )->get();
 
         if ( filter_var( $CORREO, FILTER_VALIDATE_EMAIL ) ) {
-            if ( count( $correo_existe ) == 0 || $correo==$CORREO ) {
-                if ( count( $celular_existe ) == 0 || $celular==$CELULAR) {
+            if ( count( $correo_existe ) == 0 || $correo == $CORREO ) {
+                if ( count( $celular_existe ) == 0 || $celular == $CELULAR ) {
 
                     DB::table( 'usuarios' )
                     ->where( 'IDUSUARIO', $IDUSUARIO )
@@ -130,15 +134,15 @@ class UsuariosController extends Controller {
                     }
                 } else {
                     //CELULAR EXISTE
-                    return redirect( route( 'Usuarios.buscar',$IDUSUARIO ) )->with( 'Info', 'El número celular ya se encuentra registrado' );
+                    return redirect( route( 'Usuarios.buscar', $IDUSUARIO ) )->with( 'Info', 'El número celular ya se encuentra registrado' );
                 }
             } else {
                 //CORREO EXISTE
-                return redirect( route( 'Usuarios.buscar',$IDUSUARIO ) )->with( 'Info', 'El correo ya se encuentra registrado' );
+                return redirect( route( 'Usuarios.buscar', $IDUSUARIO ) )->with( 'Info', 'El correo ya se encuentra registrado' );
             }
         } else {
             //CORREO NO VALIDO
-            return redirect( route( 'Usuarios.buscar' ,$IDUSUARIO) )->with( 'Info', 'El correo no es válido' );
+            return redirect( route( 'Usuarios.buscar', $IDUSUARIO ) )->with( 'Info', 'El correo no es válido' );
         }
 
     }

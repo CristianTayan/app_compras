@@ -10,8 +10,33 @@ class EmpresasController extends Controller {
     public function index() {
         $empresas = DB::table( 'empresa' )->get();
         $categorias = DB::table('cat_empresas')->get();
+<<<<<<< HEAD
 
         return view( 'Empresas.index', compact( 'empresas','categorias' ) );
+=======
+        $horarios = DB::table('horarios')->get();
+        return view( 'Empresas.index', compact( 'empresas','categorias','horarios') );
+    }
+    public function cambiar_estado_Empresa($IDEMPRESA){
+        $estado = DB::table( 'empresa' )->where( 'IDEMPRESA', $IDEMPRESA )->where( 'ESTADO', 's' )->get();
+        if ( count( $estado ) != 0 ) {
+            DB::table( 'empresa' )
+            ->where( 'IDEMPRESA', $IDEMPRESA )
+            ->update( [
+                'ESTADO' => 'N'
+            ] );
+            return redirect( route( 'Empresas.index' ) );
+        } else {
+            DB::table( 'empresa' )
+            ->where( 'IDEMPRESA', $IDEMPRESA )
+            ->update( [
+                'estado' => 'S'
+
+            ] );
+            return redirect( route( 'Empresas.index' ) );
+        }
+        
+>>>>>>> master
     }
 
     public function vistaCrear() {

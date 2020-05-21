@@ -63,6 +63,7 @@ desired effect
   @include('aside')
   <div class="content-wrapper">
     @yield('contenido')
+    @yield('tablas')
   </div>
   @include('footer')
 

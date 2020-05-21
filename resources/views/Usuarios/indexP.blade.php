@@ -28,8 +28,9 @@
         <div class="box-header">
             
           <h3 class="box-title">Datos</h3>
-          <input type ='button' class="btn btn-primary btn-sm pull-right" 
-           value = 'Agregar Usuario' onclick="location.href = '{{ route('Usuarios.vista') }}'"/>
+          <button class="btn btn-primary btn-sm pull-right" 
+          onclick="location.href = '{{ route('Usuarios.vista') }}'">Agregar Usuario
+         <span class="glyphicon glyphicon-plus"></span></button>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
@@ -39,7 +40,7 @@
               <th>Nombre</th>
               <th>Correo</th>
               <th>Celular</th>
-              <th>Tipo_Usuario</th>
+              <th>Dirección</th>
               <th>Estado</th>
               <th>Verificación</th>
               <th>Opciones</th>
@@ -51,13 +52,33 @@
             <td>{{ $usuario->NOMBRE}}</td>
             <td>{{$usuario->CORREO}}</td>
             <td>{{$usuario->CELULAR}}</td>
-            <td>{{ $usuario->TIPO_USUARIO }}</td>
+            @foreach($direcciones as $direccion)
+            @php
+             $cont=0;
+             @endphp
+             @if ($usuario->IDUSUARIO == $direccion->IDUSUARIO)
+             <td>{{$direccion->DIRECCION}} &nbsp; &nbsp;
+              <a href="#"> 
+                <span title="Actualizar dirección"><i class="fa fa-edit fa-lg"></i> </span>
+                </a>
+            </td>
+             @php
+             $cont=1;
+             @endphp
+             @break
+              @endif
+            @endforeach
+
+            @if( $cont==0)
+            <td><a title="Agregar una dirección al usuario" href="{{route('Direcciones.vistaCrearDireccion',$usuario->IDUSUARIO)}}"> 
+             Agregar</a>
+            @endif
             <td>{{ $usuario->ESTADO }}</td>
             <td>{{ $usuario->VERIFICACION }}</td>
-            <td><a href=""> 
-                <span class="btn btn-primary btn-xs	glyphicon glyphicon-edit"></span></a>
-                <a href = "{{route('Usuarios.eliminar', $usuario->IDUSUARIO)}}"> 
-                    <span class = "btn btn-danger btn-xs glyphicon glyphicon-trash" ></span> </a></td>
+            <td><a  href="{{route('Usuarios.buscar', $usuario->IDUSUARIO)}}"> 
+                <span title="Actualizar registro" class="btn btn-primary btn-xs	glyphicon glyphicon-edit" title="Actualizar registro"></span></a>
+                <a  href = "{{route('Usuarios.eliminar', $usuario->IDUSUARIO)}}"> 
+                    <span title="Eliminar registro" class = "btn btn-danger btn-xs glyphicon glyphicon-trash" title="Eliminar registro"></span> </a></td>
               </tr> 
             @endforeach           
           </table>

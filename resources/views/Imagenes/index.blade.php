@@ -46,6 +46,7 @@
               <td>{{$empresa->NOMBRE}}</td>
               @endif
               @endforeach
+              
               <td>{{ $producto->NOMBRE}}</td>
 
             

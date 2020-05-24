@@ -53,10 +53,20 @@ class favoritosController extends Controller {
         if ( count( $existe ) != 0 ) {
 
             $mensaje = ['message' => 'Si'];
-            return response()->json( $mensaje, 200 );
+            return response()->json( 'si', 200 );
         } else {
             $mensaje = ['message' => 'No '];
-            return response()->json( $mensaje, 400 );
+            return response()->json( 'no' , 200 );
+        }
+    }
+
+    public function mis_favoritos($idusuario){
+        $favoritos = DB::table('view_favorito_empresa')->where('IDUSUARIO', $idusuario)->where('ESTADO', 'S')->orderBy('NOMBRE')->get();
+        if ( count( $favoritos ) != 0 ) {
+            return response()->json( $favoritos, 200 );
+        } else {
+            $error = ['message' => 'No ha registrado favoritos'];
+            return response()->json( $error , 400 );
         }
     }
 

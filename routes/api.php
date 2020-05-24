@@ -105,4 +105,5 @@ Route::get( 'eliminar_detallePedidos/{IDDETALLE}', 'API\DetallePedidoController@
 Route::post( 'agregar_favorito', 'API\favoritosController@agregar_favorito' );
 Route::post( 'eliminar_favorito', 'API\favoritosController@eliminar_favorito' );
 Route::post( 'verificar_favorito', 'API\favoritosController@verificar_favorito' );
+Route::get('mis_favoritos/{idusuario}', 'API\favoritosController@mis_favoritos');
 

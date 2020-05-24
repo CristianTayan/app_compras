@@ -10,10 +10,6 @@ class EmpresasController extends Controller {
     public function index() {
         $empresas = DB::table( 'empresa' )->get();
         $categorias = DB::table('cat_empresas')->get();
-<<<<<<< HEAD
-
-        return view( 'Empresas.index', compact( 'empresas','categorias' ) );
-=======
         $horarios = DB::table('horarios')->get();
         return view( 'Empresas.index', compact( 'empresas','categorias','horarios') );
     }
@@ -36,7 +32,6 @@ class EmpresasController extends Controller {
             return redirect( route( 'Empresas.index' ) );
         }
         
->>>>>>> master
     }
 
     public function vistaCrear() {
@@ -60,7 +55,6 @@ class EmpresasController extends Controller {
         $FOTO = $request->FOTO;
         $FOTO = 'empresa/'.$FOTO;
 
-
         $nombre_existe = DB::table( 'empresa' )->where( 'NOMBRE', $NOMBRE )->get();
         if ( count( $nombre_existe ) == 0 ) {
 
@@ -75,6 +69,7 @@ class EmpresasController extends Controller {
                     'CALLE_PRINCIPAL' => $CALLE_PRINCIPAL,
                     'CALLE_SECUNDARIA' => $CALLE_SECUNDARIA,
                     'FOTO' => $FOTO
+
                 ]
             );
             $mensaje = ['message' => 'Se registro exitosamente'];

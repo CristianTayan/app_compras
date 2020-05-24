@@ -25,8 +25,8 @@ class DireccionesController extends Controller {
         $DIRECCION = $request-> DIRECCION;
         $CALLE_PRINCIPAL = $request-> CALLE_PRINCIPAL;
         $CALLE_SECUNDARIA = $request-> CALLE_SECUNDARIA;
-        $NRO_DOMICILIO  = $request-> NRO_DOMICILIO;
-        $INSTRUCCIONES = $request-> INSTRUCCIONES;
+        // $NRO_DOMICILIO  = $request-> NRO_DOMICILIO;
+        // $INSTRUCCIONES = $request-> INSTRUCCIONES;
         $CREATED_AT = Carbon::now();
 
         DB::table( 'direcciones' )->insert(
@@ -37,8 +37,8 @@ class DireccionesController extends Controller {
                 'DIRECCION' => $DIRECCION,
                 'CALLE_PRINCIPAL' =>$CALLE_PRINCIPAL,
                 'CALLE_SECUNDARIA' => $CALLE_SECUNDARIA,
-                'NRO_DOMICILIO'  => $NRO_DOMICILIO,
-                'INSTRUCCIONES' => $INSTRUCCIONES,
+                // 'NRO_DOMICILIO'  => $NRO_DOMICILIO,
+                // 'INSTRUCCIONES' => $INSTRUCCIONES,
                 'CREATED_AT' => $CREATED_AT
 
             ]

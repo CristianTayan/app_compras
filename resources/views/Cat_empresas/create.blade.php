@@ -3,7 +3,7 @@
 <section class="content-header">
     
       
-        <form role="form" method="get" action="{{ route ('Cat_Empresas.registrar') }}">
+        <form  role="form" method="POST" action="{{ route ('Cat_Empresas.registrar') }}" enctype="multipart/form-data">
         
       {{ csrf_field() }}
       <div class="row"> 
@@ -19,13 +19,13 @@
                          
                         <div class="col-md-3">
                       
-                            <h4 class="box-title">Información de la categoría</h4>
-                            <h6><em>Se agrega información de los diferentes categorías para la clasificación de las empresas  </em> </h6>
+                            <h5>Categorías para la clasificación de empresas</h5>
+                             
                         </div>
                         <div class="col-md-9">
                           <label>Nombre categoria</label>
                             <div class="input-group">
-                             <span class="input-group-addon"><i class="fa  fa-list"></i></span>
+                             <span class="input-group-addon"><i class="fa fa-keyboard-o"></i></span>
                               <input 
                               type="text" 
                               name="NOMBRE"
@@ -37,7 +37,7 @@
                             <br>
                                   <label>Detalle</label>
                             <div class="input-group">
-                             <span class="input-group-addon"><i class="fa  fa-commenting"></i></span>
+                             <span class="input-group-addon"><i class="fa fa-list"></i></span>
                               <input 
                               type="text" 
                               name="DETALLE"
@@ -48,7 +48,9 @@
                             </div>
                             <br>
                             <label for="exampleInputFile">Imagen o logo de la empresa</label>
-                            <input type="file" name="FOTO">
+                            <div id="preview"></div>
+                            <input accept="image/*" type="file" id="FOTO" name="FOTO"  >
+
                         </div>
                                
 

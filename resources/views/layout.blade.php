@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
+
 <html>
 <head>
   <meta charset="utf-8">
@@ -11,29 +8,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
-  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.css')}}">
+    <!-- Font Awesome -->
   <link rel="stylesheet" href="{{ asset('bower_components/font-awesome/css/font-awesome.min.css')}}">
   <!-- Ionicons -->
   <link rel="stylesheet" href="{{ asset('bower_components/Ionicons/css/ionicons.min.css')}}">
-  <!-- Theme style -->
+ 
   <link rel="stylesheet" href="{{ asset('dist/css/AdminLTE.min.css')}}">
   <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
-  <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
-        page. However, you can choose any other skin. Make sure you
-        apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="{{ asset('dist/css/skins/skin-blue.min.css')}}">
+  <link rel="stylesheet" href="{{asset('dist/css/skins/_all-skins.min.css')}}">
+  
 
   <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css')}}">
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
-  <!-- Google Font -->
-  <link rel="stylesheet"
+<link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <!--
@@ -56,14 +44,13 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-yellow-light sidebar-mini">
 <div class="wrapper">
 
   @include('navbar')
   @include('aside')
   <div class="content-wrapper">
     @yield('contenido')
-    @yield('tablas')
   </div>
   @include('footer')
 
@@ -78,6 +65,12 @@ desired effect
 <script src="{{asset("bower_components/bootstrap/dist/js/bootstrap.min.js")}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset("dist/js/adminlte.min.js")}}"></script>
+<script src="{{asset("dist/js/bootstrap-fileinput/js/fileinput.min.js")}}"></script>
+<script src="{{asset("dist/js/bootstrap-fileinput/js/locales/es.js")}}"></script>
+<script src="{{asset("dist/js/bootstrap-fileinput/themes/fas/theme.min.js")}}"></script>
+
+
+
 <script src="{{asset("bower_components/datatables.net/js/jquery.dataTables.min.js")}}"></script>
 <script src="{{asset("bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js")}}"></script>
 <script src="{{asset("bower_components/select2/dist/js/select2.full.min.js")}}"></script>
@@ -92,20 +85,43 @@ desired effect
       'info'        : true,
       'autoWidth'   : false
     })
-  })
-</script>
-<script>
-  $(function () {
-    //Initialize Select2 Elements
-    $('.select2').select2()
+
+  });
+  $(document).ready(function() {
+    setTimeout(function() {
+		// Declaramos la capa mediante una clase para ocultarlo
+        $("#midiv").fadeOut(1500);
+    },3000);
+});
+jQuery(document).ready(function(){
+ 
+ jQuery('#FormularioActualizar').on('hidden.bs.modal', function (e) {
+     jQuery(this).removeData('bs.modal');
+     jQuery(this).find('.modal-content').empty();
+ })
+
+   });
+
+
+
+   document.getElementById("FOTO").onchange = function(e) {
+  let reader = new FileReader();
+  reader.readAsDataURL(e.target.files[0]);
+
+  reader.onload = function(){
+    let preview = document.getElementById('preview'),  
+  image = document.createElement('img');
+  image.style.width='120px';
+  image.style.height='100px';
+  image.src = reader.result;
+     preview.innerHTML = '';
+     preview.append(image);        
+  };
+}
+
 
    
-    
-    
-
-   
-    })
-  
 </script>
+
 </body>
 </html>

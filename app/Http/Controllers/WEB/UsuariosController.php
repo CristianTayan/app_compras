@@ -22,6 +22,120 @@ class UsuariosController extends Controller {
         return view( 'Usuarios.indexA', compact( 'usuarios', 'direcciones' ) );
 
     }
+ 
+    public function enviar_sms($IDUSUARIO){
+
+        $account_sid = getenv("TWILIO_SID");
+        $auth_token = getenv("TWILIO_AUTH_TOKEN");
+        $twilio_number = getenv("TWILIO_NUMBER");
+        $client = new Client($account_sid, $auth_token);
+        $Datos=DB::table('usuarios')->where('IDUSUARIO',$IDUSUARIO)
+        ->select('CODIGO','CELULAR')->get();
+        foreach($Datos as $d){
+            $CODIGO=$d->CODIGO;
+            $CELULAR=$d->CELULAR;
+        }
+        if(count($Datos)!=0){
+            $client->messages->create($CELULAR, 
+            ['from' => $twilio_number, 'body' =>'Código de verificación app_compras'.$CODIGO ] );
+            return view( 'Usuarios.index');
+           
+        } else{
+            
+            
+        }
+    }
+    public function verificar_usuario(Request $request){
+       
+        $IDUSUARIO=$request->IDUSUARIO;
+        $CODIGO=$request->CODIGO;
+        $confirmar= DB::table('usuarios')
+        ->where('IDUSUARIO',$IDUSUARIO)
+        ->where('CODIGO',$CODIGO)->get();
+        foreach($confirmar as $est){
+            $tipo=$est->TIPO_USUARIO; 
+         }
+         $TipoUs=DB::table('usuarios')
+         ->where('IDUSUARIO',$IDUSUARIO)->get();
+         foreach($TipoUs as $est){
+            $tipoUs=$est->TIPO_USUARIO; 
+         }
+        
+        if(count($confirmar)!=0){
+            DB::table( 'usuarios' )
+            ->where( 'IDUSUARIO', $IDUSUARIO )
+            ->update(
+                [
+                    'VERIFICACION' => 'S'
+                    
+                ]
+            );
+            if ( $tipo == 'U' ) {
+                return redirect( route( 'Usuarios.index' ) )->with( 'succes', 'Usuario verificado' );
+            }
+            if ( $tipo == 'A' ) {
+                return redirect( route( 'Usuarios.indexA' ) )->with( 'succes', 'Administrador verificado' );
+            }
+            if ( $tipo == 'P' ) {
+                return redirect( route( 'Usuarios.indexP' ) )->with( 'succes', 'Proveedor verificado' );
+            }
+            
+        } else{
+            if ( $tipoUs == 'U' ) {
+                return redirect( route( 'Usuarios.index' ) )->with( 'error', 'Usuario no verificado' );
+            }
+            if ( $tipoUs == 'A' ) {
+                return redirect( route( 'Usuarios.indexA' ) )->with( 'error', ' Administrador no verificado' );
+            }
+            if ( $tipoUs == 'P' ) {
+                return redirect( route( 'Usuarios.indexP' ) )->with( 'error', 'Proveedor no' );
+            }
+        }   
+    }
+
+    public function cambiar_estado_Usuario($IDUSUARIO){
+        $estado = DB::table( 'usuarios' )->where( 'IDUSUARIO', $IDUSUARIO )->get();
+        foreach($estado as $est){
+            $tipo=$est->TIPO_USUARIO; 
+            $Est=$est->ESTADO;
+
+            if($Est=='S'){
+                DB::table( 'usuarios' )
+                ->where( 'IDUSUARIO', $IDUSUARIO )
+                ->update( [
+                    'ESTADO' => 'N'
+                ] );  
+                if ( $tipo == 'U' ) {
+                    return redirect( route( 'Usuarios.index' ) )->with( 'succes', 'Estado cambiado' );
+                }
+                if ( $tipo == 'A' ) {
+                    return redirect( route( 'Usuarios.indexA' ) )->with( 'succes', 'Estado de Administrador cambiado' );
+                }
+                if ( $tipo == 'P' ) {
+                    return redirect( route( 'Usuarios.indexP' ) )->with( 'succes', 'Estado de Proveedor cambiado' );
+                }
+
+            } 
+            if($Est=='N'){
+                DB::table( 'usuarios' )
+                ->where( 'IDUSUARIO', $IDUSUARIO )
+                ->update( [
+                    'ESTADO' => 'S'
+                ] );  
+                if ( $tipo == 'U' ) {
+                    return redirect( route( 'Usuarios.index' ) )->with( 'succes', 'Estado cambiado' );
+                }
+                if ( $tipo == 'A' ) {
+                    return redirect( route( 'Usuarios.indexA' ) )->with( 'succes', 'Estado de Administrador cambiado' );
+                }
+                if ( $tipo == 'P' ) {
+                    return redirect( route( 'Usuarios.indexP' ) )->with( 'succes', 'Estado de Proveedor cambiado' );
+                }
+
+            } 
+        }
+        
+    }
 
     public function listar_usuarios_p() {
         $usuarios = DB::table( 'usuarios' )->where( 'TIPO_USUARIO', 'P' )->get();
@@ -29,8 +143,10 @@ class UsuariosController extends Controller {
         return view( 'Usuarios.indexP', compact( 'usuarios', 'direcciones' ) );
     }
 
-    public function Usuarios_vista() {
-        return view( 'Usuarios.create' );
+    public function Usuarios_vista($tipo) {
+        $tipos=$tipo;
+
+        return view( 'Usuarios.create' , compact( 'tipos'));
     }
 
     public function Usuarios_vista_actualizar() {
@@ -50,7 +166,7 @@ class UsuariosController extends Controller {
 
         if ( $nombre == 'U' ) {
             DB::table( 'usuarios' )->where( 'IDUSUARIO', $IDUSUARIO )->delete();
-            return redirect( route( 'Usuarios.index' ) )->with( 'elminar', 'Usuario eliminado' );
+            return redirect( route( 'Usuarios.index' ) )->with( 'eliminar', 'Usuario eliminado' );
         }
         if ( $nombre == 'A' ) {
             DB::table( 'usuarios' )->where( 'IDUSUARIO', $IDUSUARIO )->delete();
@@ -124,25 +240,25 @@ class UsuariosController extends Controller {
                     );
 
                     if ( $TIPO_USUARIO == 'U' ) {
-                        return redirect( route( 'Usuarios.index' ) )->with( 'succes', 'Usuario actualizado' );
+                        return redirect( route( 'Usuarios.index' ) )->with( 'informacion', 'Usuario actualizado' );
                     }
                     if ( $TIPO_USUARIO == 'A' ) {
-                        return redirect( route( 'Usuarios.indexA' ) )->with( 'succes', 'Administrador actualizado' );
+                        return redirect( route( 'Usuarios.indexA' ) )->with( 'informacion', 'Administrador actualizado' );
                     }
                     if ( $TIPO_USUARIO == 'P' ) {
-                        return redirect( route( 'Usuarios.indexP' ) )->with( 'succes', 'Proveedor actualizado' );
+                        return redirect( route( 'Usuarios.indexP' ) )->with( 'informacion', 'Proveedor actualizado' );
                     }
                 } else {
                     //CELULAR EXISTE
-                    return redirect( route( 'Usuarios.buscar', $IDUSUARIO ) )->with( 'Info', 'El número celular ya se encuentra registrado' );
+                    return redirect( route( 'Usuarios.buscar', $IDUSUARIO ) )->with( 'informacion', 'El número celular ya se encuentra registrado' );
                 }
             } else {
                 //CORREO EXISTE
-                return redirect( route( 'Usuarios.buscar', $IDUSUARIO ) )->with( 'Info', 'El correo ya se encuentra registrado' );
+                return redirect( route( 'Usuarios.buscar', $IDUSUARIO ) )->with( 'informacion', 'El correo ya se encuentra registrado' );
             }
         } else {
             //CORREO NO VALIDO
-            return redirect( route( 'Usuarios.buscar', $IDUSUARIO ) )->with( 'Info', 'El correo no es válido' );
+            return redirect( route( 'Usuarios.buscar', $IDUSUARIO ) )->with( 'informacion', 'El correo no es válido' );
         }
 
     }
@@ -210,17 +326,19 @@ class UsuariosController extends Controller {
                         }
                     } else {
                         //CELULAR EXISTE
-                        return redirect( route( 'Usuarios.vista' ) )->with( 'Info', 'El número celular ya se encuentra registrado' );
+                        return redirect( route( 'Usuarios.vista' ) )->with( 'informacion', 'El número celular ya se encuentra registrado' );
                     }
                 } else {
                     //CORREO EXISTE
-                    return redirect( route( 'Usuarios.vista' ) )->with( 'Info', 'El correo ya se encuentra registrado' );
+                    return redirect( route( 'Usuarios.vista' ) )->with( 'informacion', 'El correo ya se encuentra registrado' );
                 }
             } else {
                 //CORREO NO VALIDO
-                return redirect( route( 'Usuarios.vista' ) )->with( 'Info', 'El correo no es válido' );
+                return redirect( route( 'Usuarios.vista' ) )->with( 'informacion', 'El correo no es válido' );
             }
         }
+        
+        
 
     }
 

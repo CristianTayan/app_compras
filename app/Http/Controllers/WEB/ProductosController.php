@@ -13,7 +13,9 @@ class ProductosController extends Controller
     {
         $productos = DB::table('productos')->where('IDEMPRESA', $id)->get();
         $categorias = DB::table('cat_productos')->where('IDEMPRESA', $id)->get();
-        return view('Productos.index', compact('productos', 'categorias'));
+        $empresas=DB::table('empresa')->where('IDEMPRESA', $id)->get();
+        $detallesProductos=DB::table('detalles_producto')->get();
+        return view('Productos.index', compact('productos', 'categorias','empresas','detallesProductos'));
     }
 
     public function cambiar_estado_Producto($ID)
@@ -61,7 +63,8 @@ class ProductosController extends Controller
     public function vista_crear($id){
         
         $categorias = DB::table('cat_productos')->where('IDEMPRESA', $id)->get();
-        return view('Productos.create', compact( 'categorias'));
+        $empresas = DB::table('empresa')->where('IDEMPRESA', $id)->get();
+        return view('Productos.create', compact( 'categorias','empresas'));
     }
 
     public function registrar_productos( Request $request ) {
@@ -72,11 +75,15 @@ class ProductosController extends Controller
         $IDEMPRESA = $request->IDEMPRESA;
         $DESCRIPCION = $request->DESCRIPCION;
         $COSTO = $request->COSTO;
-        $FOTO = $request->FOTO;
-        $FOTO = 'producto/'.$FOTO;
         $ESTADO = 'S';
         $DETALLE = 'N';
         $CREATED_AT = Carbon::now();
+
+        if($request->hasFile('FOTO')){
+            $archivo=$request->file('FOTO');
+        $FOTO=$archivo->getClientOriginalName();
+        $archivo->move(public_path().'/images/producto/',$FOTO);
+        $FOTO='images/producto/'.$FOTO;}
 
         DB::table( 'productos' )->insert(
             [
@@ -92,7 +99,7 @@ class ProductosController extends Controller
             ]
         );
         $mensaje = ['message' => 'Se registro exitosamente'];
-        return redirect( route( 'productos.listar',$IDEMPRESA ) ) ->with( 'succes', 'Creado' );
+        return redirect( route( 'productos.listar',$IDEMPRESA ) ) ->with( 'succes', 'Producto creado' );
     }
 
     public function eliminarProducto($ID){
@@ -101,45 +108,54 @@ class ProductosController extends Controller
         
         
         foreach ($estado as $e) {
-        return redirect( route( 'productos.listar',$e->IDEMPRESA ) ) ->with( 'succes', 'Eliminado' );
+        return redirect( route( 'productos.listar',$e->IDEMPRESA ) ) ->with( 'eliminado', 'Eliminado' );
         }
 
         
     }
     public function actualizar_productos( Request $request ) {
        
-       
-        $IDCATEGORIA = $request->IDCATEGORIA;
+        $IDEMPRESA=$request->IDEMPRESA;
+        $IDCATEGORIA=$request->IDCATEGORIA;
+        $IDPRODUCTO=$request->IDPRODUCTO;
         $NOMBRE = $request->NOMBRE;
-        $IDEMPRESA = $request->IDEMPRESA;
         $DESCRIPCION = $request->DESCRIPCION;
-        $COSTO = $request->COSTO;
-        $FOTO = $request->FOTO;
-        $FOTO = 'producto/'.$FOTO;
-        $ESTADO = 'S';
-        $DETALLE = 'N';
+        $COSTO = $request->COSTO; 
         $CREATED_AT = Carbon::now();
+        if($request->hasFile('FOTO')){
+            $archivo=$request->file('FOTO');
+        $FOTO=$archivo->getClientOriginalName();
+        $archivo->move(public_path().'/images/producto/',$FOTO);
+        $FOTO='images/producto/'.$FOTO;} else{
+            $FOTO = $request->FOTOE;
+        }
 
-        DB::table( 'productos' )->update(
+        DB::table( 'productos' )
+        ->where('IDPRODUCTO',$IDPRODUCTO)
+        ->update(
             [
-                'IDCATEGORIA' => $IDCATEGORIA,
-                'IDEMPRESA' =>$IDEMPRESA,   
+                  
                 'NOMBRE' => $NOMBRE,
                 'DESCRIPCION' => $DESCRIPCION,
                 'COSTO' => $COSTO,
                 'FOTO' => $FOTO,
-                'ESTADO' => $ESTADO,
-                'DETALLE' => $DETALLE,
+                'IDCATEGORIA' => $IDCATEGORIA,
                 'CREATED_AT' => $CREATED_AT
             ]
         );
-        $mensaje = ['message' => 'Se actualizo exitosamente'];
-        return redirect( route( 'productos.listar',$IDEMPRESA ) ) ->with( 'succes', 'Creado' );
+        
+        return redirect( route( 'productos.listar',$IDEMPRESA ) ) ->with( 'informacion', 'Actualizado' );
     }
     public function vistaEditarProd($id){
         $categorias = DB::table('cat_productos')->get();
-        $productos = DB::table('productos')->where('IDEMPRESA', $id)->get();
+        $productos = DB::table('productos')->where('IDPRODUCTO', $id)->get();
         return view('Productos.edit', compact( 'categorias','productos'));
     }
 
+    public function indexE() {
+        $empresas = DB::table( 'empresa' )->get();
+        $categorias = DB::table('cat_empresas')->get();
+      
+        return view( 'Productos.indexE', compact( 'empresas','categorias') );
+    }
 }

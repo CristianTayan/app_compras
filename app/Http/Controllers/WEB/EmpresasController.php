@@ -30,10 +30,8 @@ class EmpresasController extends Controller {
 
             ] );
             return redirect( route( 'Empresas.index' ) );
-        }
-        
+        } 
     }
-
     public function vistaCrear() {
         $categorias = DB::table( 'cat_empresas' )->get();
         $proveedores = DB::table( 'usuarios' )
@@ -42,18 +40,20 @@ class EmpresasController extends Controller {
         return view( 'Empresas.create', compact( 'categorias', 'proveedores' ) );
 
     }
-
     public function registrar( Request $request ) {
         $IDCATEGORIA = $request->IDCATEGORIA;
         $IDUSUARIO = $request->IDUSUARIO;
         $NOMBRE = $request->NOMBRE;
         $COORDENADAX = $request->COORDENADAX;
         $COORDENADAY = $request->COORDENADAY;
-        $DIRECCION = $request->DIRECCION;
         $CALLE_PRINCIPAL = $request->CALLE_PRINCIPAL;
         $CALLE_SECUNDARIA = $request->CALLE_SECUNDARIA;
-        $FOTO = $request->FOTO;
-        $FOTO = 'empresa/'.$FOTO;
+        $DIRECCION = $CALLE_PRINCIPAL .'y'. $CALLE_SECUNDARIA;
+        if($request->hasFile('FOTO')){
+            $archivo=$request->file('FOTO');
+        $FOTO=$archivo->getClientOriginalName();
+        $archivo->move(public_path().'/images/empresa/',$FOTO);
+        $FOTO='images/empresa/'.$FOTO;}
 
         $nombre_existe = DB::table( 'empresa' )->where( 'NOMBRE', $NOMBRE )->get();
         if ( count( $nombre_existe ) == 0 ) {
@@ -72,18 +72,18 @@ class EmpresasController extends Controller {
 
                 ]
             );
-            $mensaje = ['message' => 'Se registro exitosamente'];
-            return redirect( route( 'Empresas.index' ) ) ->with( 'succes', 'Creado' );
+           
+            return redirect( route( 'Empresas.index' ) ) ->with( 'succes', 'Empresa creada' );
         } else
-        $mensaje = ['message' => 'Nombre de empresa ya registrado'];
-        return redirect( route( 'Empresas.index' ) ) ->with( 'error', 'No exitoso' );
+       
+        return redirect( route( 'Empresas.index' ) ) ->with( 'informacion', 'No exitoso' );
     }
 
     public function eliminarEmpresas( $ID ) {
 
         DB::table( 'empresa' )->where( 'IDEMPRESA', $ID ) ->delete();
         $mensaje = ['message' => 'Se elimino correctamente'];
-        return redirect( route( 'Empresas.index' ) ) ->with( 'succes', 'Eliminado' );
+        return redirect( route( 'Empresas.index' ) ) ->with( 'eliminado', 'Eliminado' );
 
     }
 
@@ -95,12 +95,16 @@ class EmpresasController extends Controller {
         $NOMBRE = $request->NOMBRE;
         $COORDENADAX = $request->COORDENADAX;
         $COORDENADAY = $request->COORDENADAY;
-        $DIRECCION = $request->DIRECCION;
         $CALLE_PRINCIPAL = $request->CALLE_PRINCIPAL;
         $CALLE_SECUNDARIA = $request->CALLE_SECUNDARIA;
-
-        $FOTO = $request->FOTO;
-        $FOTO = '/empresa/'.$FOTO;
+        $DIRECCION = $CALLE_PRINCIPAL .' y '. $CALLE_SECUNDARIA;
+        if($request->hasFile('FOTO')){
+            $archivo=$request->file('FOTO');
+        $FOTO=$archivo->getClientOriginalName();
+        $archivo->move(public_path().'/images/empresa/',$FOTO);
+        $FOTO='images/empresa/'.$FOTO;}else{
+            $FOTO = $request->FOTOE;
+        }
 
         $existe = DB::table( 'empresa' )
         ->where( 'IDEMPRESA', $IDEMPRESA )->get();
@@ -122,10 +126,10 @@ class EmpresasController extends Controller {
             );
 
             $mensaje = ['message' => 'Se actualizo exitosamente'];
-            return redirect( route( 'Empresas.index' ) ) ->with( 'succes', 'ACTUALIZADO' );
+            return redirect( route( 'Empresas.index' ) ) ->with( 'informacion', 'Actualizado' );
         } else
         $mensaje = ['message' => 'No se actualizo correctamente'];
-        return redirect( route( 'Empresas.index' ) ) ->with( 'error', 'No exitoso' );
+        return redirect( route( 'Empresas.index' ) ) ->with( 'eliminado', 'No exitoso' );
 
     }
 
@@ -137,5 +141,56 @@ class EmpresasController extends Controller {
 
         return view( 'Empresas.edit', compact( 'emp', 'categorias', 'proveedores' ) );
     }
+    
+
+    public function vistaCrearEmpresaCat($ID)
+     {
+        $categorias = DB::table( 'cat_empresas' )->where('IDCATEGORIA',$ID)->get();
+        $proveedores = DB::table( 'usuarios' )
+        ->where( 'TIPO_USUARIO', 'P' )
+        ->get();
+        return view( 'Cat_empresas.createCat', compact( 'categorias', 'proveedores' ) );
+
+    }
+
+    public function registrarEmpresas( Request $request ) {
+        $IDCATEGORIA = $request->IDCATEGORIA;
+        $IDUSUARIO = $request->IDUSUARIO;
+        $NOMBRE = $request->NOMBRE;
+        $COORDENADAX = $request->COORDENADAX;
+        $COORDENADAY = $request->COORDENADAY;
+        $CALLE_PRINCIPAL = $request->CALLE_PRINCIPAL;
+        $CALLE_SECUNDARIA = $request->CALLE_SECUNDARIA;
+        $DIRECCION = $CALLE_PRINCIPAL .'y'. $CALLE_SECUNDARIA;
+        if($request->hasFile('FOTO')){
+            $archivo=$request->file('FOTO');
+        $FOTO=$archivo->getClientOriginalName();
+        $archivo->move(public_path().'/images/empresa/',$FOTO);
+        $FOTO='images/empresa/'.$FOTO;}
+
+        $nombre_existe = DB::table( 'empresa' )->where( 'NOMBRE', $NOMBRE )->get();
+        if ( count( $nombre_existe ) == 0 ) {
+
+            DB::table( 'empresa' )->insert(
+                [
+                    'IDCATEGORIA' => $IDCATEGORIA,
+                    'IDUSUARIO' => $IDUSUARIO,
+                    'NOMBRE' => $NOMBRE,
+                    'COORDENADAX' => $COORDENADAX,
+                    'COORDENADAY' => $COORDENADAY,
+                    'DIRECCION' => $DIRECCION,
+                    'CALLE_PRINCIPAL' => $CALLE_PRINCIPAL,
+                    'CALLE_SECUNDARIA' => $CALLE_SECUNDARIA,
+                    'FOTO' => $FOTO
+
+                ]
+            );
+            return redirect( route( 'Empresas.indexCat',$IDCATEGORIA ) )->with( 'succes', 'Empresa creada' );
+        } else
+      
+        return redirect( route( 'Empresas.indexCat',$IDCATEGORIA ) ) ->with( 'eliminado', 'No exitoso' );
+    }
+
+
 
 }

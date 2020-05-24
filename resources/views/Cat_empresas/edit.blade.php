@@ -3,7 +3,7 @@
 @foreach ($categorias as $cat)
 <section class="content-header">
     
-        <form role="form" method="get" action="{{ route ('editarCategoria') }}">
+        <form role="form" method="post" action="{{ route ('editarCategoria') }}" enctype="multipart/form-data">
                   
       {{ csrf_field() }}
       <div class="row"> 
@@ -19,8 +19,8 @@
                          
                         <div class="col-md-3">
                       
-                            <h4 class="box-title">Información de categorías de empresas</h4>
-                            <h6><em>Se actualiza la información de  categorías para la clasificación de las empresas  </em> </h6>
+                            <h5>Información de la categoría</h5>
+                           
                         </div>
                         <div class="col-md-9">
                             <input type="hidden" name="IDCATEGORIA" value="{{ $cat->IDCATEGORIA}}" class="form-control">
@@ -51,11 +51,18 @@
                             </div>
                             <br>
                             
-            <label for="exampleInputFile">FOTO</label>
-            <input type="file" value="{{ $cat->FOTO}}" name="FOTO">
-                        </div>
-                               
+                         <label for="exampleInputFile">Imagen de la empresa</label> <br>
 
+                         <img src="{{asset($cat->FOTO)}}" style="width: 120px; height: 100px; object-fit: cover">
+                         <br>
+                         <label> Imagen actualizada</label><br>
+                         <div id="preview">   
+                         </div>
+                          <input type="file"    name="FOTO" id="FOTO">
+                          <input type="hidden" value="{{ $cat->FOTO }}" name="FOTOE">
+
+                          
+                        </div>
                        </div>
                      </div>
   

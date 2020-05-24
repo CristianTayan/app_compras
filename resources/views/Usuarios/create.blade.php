@@ -18,7 +18,7 @@
                         <div class="col-md-3">
                       
                             <h4 class="box-title">Información del usuario </h4>
-                            <h6><em>Los datos de usuario que servirán para el acceso al sistema </em> </h6>
+                            <h6>Los datos de usuario que servirán para el acceso al sistema  </h6>
                           </div>
                          
                           <div class="col-md-9">
@@ -31,14 +31,14 @@
                           pattern= "^[a-zA-Z ]*$" 
                           class="form-control" 
                           placeholder="Nombre"
-                          title="El nombre no puede contener números">
+                          title="El nombre no puede contener números" required>
                           </div>
                          <br>
               
                          <label>Correo</label>
                          <div class="input-group"> 
                           <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                          <input type="email" name="CORREO" class="form-control" placeholder="Correo">
+                          <input type="email" name="CORREO" class="form-control" placeholder="Correo" required>
                          </div>
                          <br>
               
@@ -53,7 +53,7 @@
                             pattern= "(09)[0-9]{8}" 
                             name="CELULAR" 
                             class="form-control"
-                            title="El numero celular debe iniciar con 09 y contener 10 números. Ejm:09xxxxxxxx" >
+                            title="El numero celular debe iniciar con 09 y contener 10 números. Ejm:09xxxxxxxx" required>
                           </div>
                           <br>
               
@@ -62,13 +62,10 @@
                           <div class="input-group-addon">
                             <i class="fa fa-key"></i>
                           </div>
-                          <input type="password" name="CONTRASENA" class="form-control" >
+                          <input type="password" name="CONTRASENA" class="form-control" required>
                          </div>
                          <br>
-              
-                        
-                        
-                           </div>
+                       </div>
                      </div>
   
                  </div>
@@ -76,16 +73,36 @@
                   <div class="box-header with-border">   
                      <div class="col-md-3">
                       <h4 class="box-title">Asignación de rol </h4>
-                      <h6><em>Se asigna un rol para las diferentes acciones que puede realizar en la aplicación </em> </h6>
+                      <h6>Se asigna un rol para las diferentes acciones que puede realizar en la aplicación  </h6>
                        </div>
                        <div class="col-md-9">
 
                         <label>Tipo de Usuario</label>
+                        
+                        @if ($tipos=='A')
+                        <select  class="form-control" name="TIPO_USUARIO" style="width: 100%;">
+                          <option  name="TIPO_USUARIO" value="U" >Usuario aplicación</option>
+                          <option  name="TIPO_USUARIO" value="A" selected>Administrador</option>
+                          <option name="TIPO_USUARIO" value="P">Proveedor</option>
+                        </select>  
+                        @endif
+                        @if ($tipos=='P')
                         <select class="form-control" name="TIPO_USUARIO" style="width: 100%;">
                           <option  name="TIPO_USUARIO" value="U">Usuario aplicación</option>
-                          <option  name="TIPO_USUARIO" value="A">Administrador</option>
-                          <option name="TIPO_USUARIO" value="P">Proveedor</option>
-                        </select>
+                          <option  name="TIPO_USUARIO" value="A" >Administrador</option>
+                          <option name="TIPO_USUARIO" value="P" selected>Proveedor</option>
+                        </select>  
+                        @endif
+                        @if ($tipos=='U')
+                        <select class="form-control" name="TIPO_USUARIO" style="width: 100%;">
+                          <option  name="TIPO_USUARIO" value="U" selected>Usuario aplicación</option>
+                          <option  name="TIPO_USUARIO" value="A" >Administrador</option>
+                          <option name="TIPO_USUARIO" value="P" >Proveedor</option>
+                        </select>  
+                        @endif
+
+                       
+                        
                       
                        <br>
 
@@ -94,7 +111,7 @@
                        </div>
               <div class="box-footer">
                 <button type ='button' class="btn btn-danger " 
-                onclick="location.href = '{{Route('Usuarios.index')}}'">
+                onclick="location.href = '{{ URL::previous() }}'">
                 <span class="glyphicon glyphicon-remove"></span> Cancelar</button>
                   <button type="submit" class="btn btn-primary pull-right">
                     <span class="glyphicon glyphicon-floppy-saved"></span>Guardar Usuario</button>

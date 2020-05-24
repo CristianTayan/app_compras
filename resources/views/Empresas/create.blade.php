@@ -1,7 +1,7 @@
 @extends('layout')
 @section('contenido')
 <section class="content-header">
- <form method="get" action="{{ route('Empresas.crear')}}">
+ <form method="post" action="{{ route('Empresas.crear')}}" enctype="multipart/form-data">
         {{ csrf_field() }}
     <div class="row"> 
         <div class="col-md-12"> 
@@ -60,7 +60,7 @@
                     <label>Coordenada en x</label>
                     <div class="input-group"> 
                       <span class="input-group-addon"><i class="fa fa-map-signs"></i></span>
-                      <input type="text" name="COORDENADAX"  class="form-control" placeholder="Correo">
+                      <input type="text" name="COORDENADAX"  class="form-control">
                     </div>
                     <br>
                     <label>Coordenada y</label>
@@ -71,12 +71,7 @@
                       name="COORDENADAY"         
                       class="form-control">
                     </div>
-                    <br>
-                    <label>Dirección</label>
-                    <div class="input-group">
-                     <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
-                      <input type="TEXT" name="DIRECCION"  class="form-control" >
-                    </div>
+                    
                     <br>
                     
                     <label>Calle principal</label>
@@ -104,14 +99,19 @@
                      </div>
                   <div class="col-md-9">
                     <label for="exampleInputFile"  >FOTO</label>
-                    <input type="file" name="FOTO">
+                    <div id="preview"></div>
+                    <input accept="image/*" type="file" id="FOTO" name="FOTO"  >
                     <br>
                   </div>
                 </div>
                  
             </div>
             <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Registrar empresa</button>
+              <button type ='button' class="btn btn-danger " 
+                onclick="location.href = '{{ URL::previous() }}'">
+                <span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                <button type="submit" class="btn btn-primary pull-right"> 
+                  <span class="glyphicon glyphicon-floppy-saved"></span>Guardar empresa</button>
            </div>
          </div> <!-- Para que todo este dentro del mismo modelo -->      
        </div> <!-- Para el tamaño de todo -->  

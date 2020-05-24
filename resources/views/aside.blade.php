@@ -37,8 +37,10 @@
   
       <li class="{{ !Route::is('categorias.index') ?: 'active'}}"><a href="{{Route('categorias.index')}}"><i class="fa fa-list"></i> <span>Categorias</span></a></li>
       <li class="{{ !Route::is('Empresas.index') ?: 'active'}}"><a href="{{Route('Empresas.index')}}"><i class="fa fa-building"></i> <span>Empresas</span></a></li>
+      <li class="{{ !Route::is('Empresas.indexE') ?: 'active'}}"><a href="{{Route('Empresas.indexE')}}"><i class=" fa fa-shopping-cart"></i> <span>Productos</span></a></li>
+            
 
-      <li class="treeview {{ !Route::is('Imagenes.indexE') ?: 'active' }} || {{!Route::is('Imagenes.index') ?: 'active'}}" >
+     <!-- Validar imagenes <li class="treeview {{ !Route::is('Imagenes.indexE') ?: 'active' }} || {{!Route::is('Imagenes.index') ?: 'active'}}" >
         <a href="#"><i class="fa fa-image"></i> <span>Validar Imágenes</span>
           <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -48,7 +50,7 @@
           <li class="{{ !Route::is('Imagenes.indexE') ?: 'active'}}"><a href="{{Route('Imagenes.indexE')}}">Empresas</a></li>
           <li class="{{ !Route::is('Imagenes.index') ?: 'active'}}"><a href="{{Route('Imagenes.index')}}">Productos</a></li> 
         </ul>
-      </li>
+      </li>-->
       <li class="treeview {{ !Route::is('pedidosE') ?: 'active' }} || {{!Route::is('pedidosP') ?: 'active'}}
        || {{!Route::is('pedidosF') ?: 'active'}} || {{!Route::is('pedidosA') ?: 'active'}}">
         <a href=""><i class="fa fa-send "></i> <span>Pedido</span>
@@ -60,14 +62,13 @@
           <li class="{{ !Route::is('pedidosE') ?: 'active' }}"><a href="{{Route('pedidosE')}}">Pedidos enviados</a></li>
           <li class="{{ !Route::is('pedidosP') ?: 'active' }}"><a href="{{Route('pedidosP')}}">Pedidos en proceso</a></li>
           <li class="{{ !Route::is('pedidosF') ?: 'active' }}"><a href="{{Route('pedidosF')}}">Pedidos Finalizados</a></li>
-          <li class="{{ !Route::is('pedidosA') ?: 'active' }}"><a href="{{Route('pedidosA')}}">Pedidos Anulados</a></li>
+          <li class="{{  Route::is('pedidosA') ?: 'active' }}"><a href="{{Route('pedidosA')}}">Pedidos Anulados</a></li>
         
         </ul>
 
       </li>
-      <li class="{{ !Route::is('detalleP') ?: 'active'}}"><a href="{{Route('detalleP')}}"><i class="fa fa-building"></i> <span>Detalles Pedido</span></a></li>
-    <li class=""><a href="{{Route('probar')}}"><i class=""></i> <span>Productos</span></a></li>
     
+    <li class="{{ !Route::is('Transportistas.listar') ?: 'active'}}"><a href="{{Route('Transportistas.listar')}}"><i class="fa fa-car"></i> <span>Transportistas</span></a></li>
     </ul>
       <!-- /.sidebar-menu -->
     </section>

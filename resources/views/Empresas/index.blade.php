@@ -1,18 +1,12 @@
 @extends('layout')
 @section('contenido')
-@if (session('succes'))
-            <div class="alert alert-success">
-              {{session('succes')}}
-            </div>
-            @endif
-  @if (session('eliminar'))
-  <div class="alert alert-danger" role="alert">
-  {{session('eliminar')}}
-    </div>
-  @endif
+
 <section class="content-header">
     <h1>
-      Empresas registradas
+      <a style="color:black;" href="{{ URL::current() }}"> 
+        Empresas registradas
+        </a>
+     
       <small>Lista de empresas</small>
     </h1>
     <ol class="breadcrumb">
@@ -25,39 +19,48 @@
     <div class="box">
         <div class="box-header">
           <h3 class="box-title">Datos</h3>
-          <button class="btn btn-primary btn-sm pull-right" 
+          @if (session('succes'))
+          <div id="midiv" class="creado" role="alert">
+              {{session('succes')}}
+          </div>
+        @endif
+        @if (session('informacion'))
+        <div id="midiv" class="informacion" role="alert">
+          {{session('informacion')}}
+        </div>
+        @endif
+        @if (session('eliminar'))
+          <div id="midiv" class="eliminado" role="alert">
+             {{session('eliminar')}}
+          </div>
+        @endif
+          <button class="btn btn-primary btn-xs pull-right" 
           value = 'Agregar categoría' onclick="location.href = '{{ route('Empresas.vistaCrear') }}'">Agregar empresa
-          <span class="glyphicon glyphicon-plus"></span></button>
+          <span class="btn btn-primary btn-sm glyphicon glyphicon-plus"></span></button>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
           <table id="example1" class="table table-bordered table-striped">
             <thead>
-            <tr>
-              <th>Nro</th>
+            <tr>          
               <th>Nombre</th>
-              <th>Categoría</th>
               <th>Dirección</th>
               <th>Horario</th>
               <th>Estado</th>
-              <th>Productos</th>
-              <th>Opciones</th>
-              
+              <th>Imagen/Logo</th>
 
-              
+              <th>Opciones</th>
+ 
             </tr>
             </thead>
-            @foreach ($empresas as $empresa)
+           
             <tbody>
               
               <tr>
-              <td>{{ $empresa->IDEMPRESA}}</td>
+                @foreach ($empresas as $empresa)
+              
                   <td>{{$empresa->NOMBRE}} </td>
-                  @foreach($categorias as $categoria)
-                  @if($categoria->IDCATEGORIA == $empresa->IDCATEGORIA)
-                   <td>{{$categoria->NOMBRE}}</td>
-                   @endif
-                  @endforeach
+                 
                   <td>{{ $empresa->DIRECCION }}</td>
                   @foreach($horarios as $horario)
                    @php
@@ -90,13 +93,11 @@
                       ></span> </a>
                    @endif  
                     </td>
-                  <td> Lista de productos
-                    <a href="{{route('productos.listar',$empresa->IDEMPRESA)}}"> 
-                      <span name="ID" title="Ver la lista de productos de la empresa" class = "btn btn-primary btn-xs glyphicon glyphicon-folder-open"> </span></a>
-
-                  </td>
+                 
+                    <td><img src="{{asset($empresa->FOTO)}}" style="width: 150px; height: 100px; object-fit: cover">
 
               <td>
+
               <a href="{{route('Empresas.vistaEditar',$empresa->IDEMPRESA)}}"> 
                   <span title="Actualizar registro" class="btn btn-primary btn-xs	glyphicon glyphicon-edit"></span></a>
               <a  href = "{{route('Empresas.eliminar',$empresa->IDEMPRESA)}}"> 
@@ -109,6 +110,9 @@
               @endforeach       
             </tbody>
           </table>
+          <button type ='button' class="btn btn-default " 
+                onclick="location.href = '{{ URL::previous() }}'">
+                <span class="glyphicon glyphicon-chevron-left"></span> Atrás </button>
         </div>
         <!-- /.box-body -->
       </div>

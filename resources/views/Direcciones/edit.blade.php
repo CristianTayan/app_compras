@@ -1,7 +1,7 @@
 @extends('layout')
 @section('contenido')
 <section class="content-header">
- <form method="get" action="#">
+ <form method="get" action="{{ route('Direcciones.actualizar') }}">
         {{ csrf_field() }}
     <div class="row"> 
         <div class="col-md-12"> 
@@ -21,8 +21,8 @@
                        
                         <div class="col-md-9">
                             @foreach ($DireccionEditar as $direccion)
-                        <input type="hidden" value="{{$direccion->IDDIRECCION}}" name="IDUSUARIO" >
-                          
+                        <input type="hidden" value="{{$direccion->IDDIRECCION}}" name="IDDIRECCION" >
+                        <input type="hidden" value="{{$direccion->IDUSUARIO}}" name="IDUSUARIO" > 
                     
                            <label>Coordenada en x</label>
                            <div class="input-group"> 
@@ -40,12 +40,7 @@
                              class="form-control">
                            </div>
                            <br>
-                           <label>Dirección</label>
-                           <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
-                             <input type="TEXT" value="{{$direccion->DIRECCION}}" name="DIRECCION"  class="form-control" >
-                           </div>
-                           <br>
+                          
                            
                            <label>Calle principal</label>
                            <div class="input-group">
@@ -65,12 +60,7 @@
                                <input type="text" value="{{$direccion->NRO_DOMICILIO}}" name="NRO_DOMICILIO"  class="form-control">
                            </div>
                            <br>
-                           <label>Instrucciones</label>
-                           <div class="input-group">
-                               <span class="input-group-addon"><i class="fa fa-list-ol"></i></span>
-                               <textarea value="{{$direccion->INSTRUCCIONES}}" name="INSTRUCCIONES"   class="form-control"></textarea>
-                           </div>
-                           <br>
+                           
                         
                          </div>
                    </div>
@@ -83,7 +73,7 @@
                 <span class="glyphicon glyphicon-remove"></span> Cancelar</button>
                 
                 <button type="submit" class="btn btn-primary pull-right">
-                    <span class="glyphicon glyphicon-floppy-saved"></span> Guardar dirección</button>
+                    <span class="glyphicon glyphicon-floppy-saved"></span> Actualizar dirección</button>
            </div>
            @endforeach
          </div> <!-- Para que todo este dentro del mismo modelo -->      

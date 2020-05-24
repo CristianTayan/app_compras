@@ -5,7 +5,11 @@
       {{session('succes')}}
   </div>
 @endif
-            
+@if (session('error'))
+<div class="alert alert-danger">
+  {{session('error')}}
+</div>
+@endif
 @if (session('eliminar'))
   <div class="alert alert-danger" role="alert">
      {{session('eliminar')}}
@@ -14,8 +18,11 @@
 
 <section class="content-header">
     <h1>
-      Usuarios
-      <small>Lista usuarios</small>
+      <a style="color:black;" href="{{ URL::current() }}"> 
+        Proveedores
+        </a>
+      
+      <small>Lista de proveedores</small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -28,8 +35,26 @@
         <div class="box-header">
             
           <h3 class="box-title">Datos</h3>
+          @if (session('succes'))
+          <div id="midiv" class="creado" role="alert">
+              {{session('succes')}}
+          </div>
+        @endif
+        @if (session('informacion'))
+        <div id="midiv" class="informacion" role="alert">
+          {{session('informacion')}}
+        </div>
+        @endif
+        @if (session('eliminar'))
+          <div id="midiv" class="eliminado" role="alert">
+             {{session('eliminar')}}
+          </div>
+        @endif
+          @php
+          $tipo='A';
+          @endphp
           <button class="btn btn-primary btn-sm pull-right" 
-          onclick="location.href = '{{ route('Usuarios.vista') }}'">Agregar Usuario
+          onclick="location.href = '{{ route('Usuarios.vista', $tipo) }}'">Agregar Proveedor
          <span class="glyphicon glyphicon-plus"></span></button>
         </div>
         <!-- /.box-header -->
@@ -58,7 +83,7 @@
              @endphp
              @if ($usuario->IDUSUARIO == $direccion->IDUSUARIO)
              <td>{{$direccion->DIRECCION}} &nbsp; &nbsp;
-              <a href="#"> 
+              <a href="{{route('Direcciones.vistaActualizarDireccion',$direccion->IDDIRECCION)}}"> 
                 <span title="Actualizar dirección"><i class="fa fa-edit fa-lg"></i> </span>
                 </a>
             </td>
@@ -73,8 +98,78 @@
             <td><a title="Agregar una dirección al usuario" href="{{route('Direcciones.vistaCrearDireccion',$usuario->IDUSUARIO)}}"> 
              Agregar</a>
             @endif
-            <td>{{ $usuario->ESTADO }}</td>
-            <td>{{ $usuario->VERIFICACION }}</td>
+            <td>
+              @if($usuario->ESTADO == "S")
+              <a  href = "{{route('Usuario.cambiarEstadoUusuario',$usuario->IDUSUARIO)}}"> 
+                Activo
+                <span  title="Cambiar estado a INACTIVO"  class = "fa fa-check" 
+              ></span> </a>
+              
+              @else
+              <a   style="color:rgb(248, 151, 131 );" title="Cambiar estado a ACTIVO" href = "{{route('Usuario.cambiarEstadoUusuario',$usuario->IDUSUARIO)}}">
+               Inactivo
+                <span title="Cambiar estado a ACTIVO"  class = "fa fa-remove" 
+                ></span> </a>
+             @endif 
+            </td>
+            <td style="text-align: center;">
+              @if($usuario->VERIFICACION == "S")
+             
+                
+                <span style="color: green" title="Usuario verificado"  class = "fa fa-check-circle fa-lg fa-align-center" 
+              ></span> 
+              
+              @else
+              <a data-toggle="modal" data-target="#modal-default" href = "#"   title="Enviar mensaje de verificación" 
+               > <!-- / {{route('Usuarios.enviarCodigo', $usuario->IDUSUARIO)}} --> 
+                Verificar
+                 <span title="Enviar mensaje de verificación"  class = "fa  fa-envelope-o" 
+                 ></span> </a>
+                 
+                 <form method="get" action="{{route('Usuarios.verificar_usuario')}}">
+                  {{ csrf_field() }}
+              <div class="modal fade" id="modal-default">
+                <div class="modal-dialog">
+                              <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">Ingrese el código de verificacíon</h4>
+                    </div>
+                    <div class="modal-body">
+                      
+                        <input type="text" name="IDUSUARIO" value="{{ $usuario->IDUSUARIO}}" class="form-control">
+
+                          <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                        <input 
+                        type="text" 
+                        name="CODIGO" 
+                        pattern= "[0-9]*" 
+                        maxlength="6"
+                        class="form-control" 
+                        placeholder="Código"
+                        title="Puede ingresar sólo números" required>
+                        </div>
+                       <br>
+                       
+                      
+                     
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                      <button type="submit" class="btn btn-primary">Verificar</button>
+                    </div>
+                  </div>
+                
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+            </form>
+             @endif 
+              
+            </td>
             <td><a  href="{{route('Usuarios.buscar', $usuario->IDUSUARIO)}}"> 
                 <span title="Actualizar registro" class="btn btn-primary btn-xs	glyphicon glyphicon-edit" title="Actualizar registro"></span></a>
                 <a  href = "{{route('Usuarios.eliminar', $usuario->IDUSUARIO)}}"> 

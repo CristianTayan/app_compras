@@ -14,8 +14,10 @@
 
 <section class="content-header">
     <h1>
-      Pedidos Regitras
-      <small>Lista de Pedidos</small>
+      <a style="color:black;" href="{{ URL::current() }}"> 
+        Pedidos en proceso
+        </a>
+      <small>Lista de Pedidos en proceso</small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -37,7 +39,7 @@
               <th>COSTO ENVIO</th>
               <th>TOTAL</th>
               <th>FECHA CREACION</th>
-
+              <th>FECHA RECEPCIÓN </th>
               
             </tr>
             </thead>
@@ -57,14 +59,20 @@
                   <td>{{$pedido->SUBTOTAL}}</td>
               <td>{{ $pedido->COSTO_ENVIO }}</td>
               <td>{{$pedido->TOTAL}}</td>
-              <td> {{$pedido->FECHA_CREACION}}</td>   
+              <td> {{$pedido->FECHA_CREACION}}</td>
+              <td> {{$pedido->FECHA_RECEPCION}}</td>   
+              <td>
+                <a href="{{Route('detalleP',$pedido->IDPEDIDO)}}"> 
+                  <span title="Ver detalles" class="btn btn-primary btn-xs">Detalles</span></a>
+              
+              </td>
                 </tr> 
               
               @endforeach    
                       
           </table>
         </div>
-        <!-- /.box-body -->
+        
       </div>
 </section>
 @endsection

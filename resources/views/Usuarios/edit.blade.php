@@ -21,7 +21,7 @@
                                 
                                           <h4 class="box-title">Credenciales de usuarios </h4>
                                           <br>
-                                          <h6><em>Información del usuario para acceso al sistema </em> </h6>
+                                          <h6>Información del usuario para acceso al sistema </h6>
                                      </div>
                                    
                                        <div class="col-md-9">
@@ -82,25 +82,52 @@
                               
                                         <h4 class="box-title">Características de usuarios </h4>
                                         <br>
-                                        <h6><em>Información de roles o permisos que poseen los usuarios dentro de la aplicación </em> </h6>
+                                        <h6>Información de roles o permisos que poseen los usuarios dentro de la aplicación  </h6>
                                    </div>
                                  
                                      <div class="col-md-9">
 
                                         <label>Tipo de Usuario</label>
+                                        
+                                        @if ($usuario->TIPO_USUARIO=='A')
+                                        <select  class="form-control" name="TIPO_USUARIO" style="width: 100%;">
+                                          <option  name="TIPO_USUARIO" value="U" >Usuario aplicación</option>
+                                          <option  name="TIPO_USUARIO" value="A" selected>Administrador</option>
+                                          <option name="TIPO_USUARIO" value="P">Proveedor</option>
+                                        </select>  
+                                        @endif
+                                        @if ($usuario->TIPO_USUARIO=='P')
                                         <select class="form-control" name="TIPO_USUARIO" style="width: 100%;">
                                           <option  name="TIPO_USUARIO" value="U">Usuario aplicación</option>
-                                          <option  name="TIPO_USUARIO" value="A">Administrador</option>
-                                          <option name="TIPO_USUARIO" value="P">Proveedor</option>
-                                        </select>
-                                        
+                                          <option  name="TIPO_USUARIO" value="A" >Administrador</option>
+                                          <option name="TIPO_USUARIO" value="P" selected>Proveedor</option>
+                                        </select>  
+                                        @endif
+                                        @if ($usuario->TIPO_USUARIO=='U')
+                                        <select class="form-control" name="TIPO_USUARIO" style="width: 100%;">
+                                          <option  name="TIPO_USUARIO" value="U" selected>Usuario aplicación</option>
+                                          <option  name="TIPO_USUARIO" value="A" >Administrador</option>
+                                          <option name="TIPO_USUARIO" value="P" >Proveedor</option>
+                                        </select>  
+                                        @endif
+
                                         <br>
                                         <label>Estado</label>
+                                        @if($usuario->ESTADO=='S')
                                         <select class="form-control" name="ESTADO" style="width: 100%;">
-                                          <option  name="ESTADO" value="U">Activo</option>
-                                          <option  name="ESTADO" value="A">Inactivo</option>
+                                          <option  name="ESTADO" value="S" selected>Activo</option>
+                                          <option  name="ESTADO" value="N">Inactivo</option>
                                           
                                         </select>
+                                        @endif
+                                        @if($usuario->ESTADO=='N')
+                                        <select class="form-control" name="ESTADO" style="width: 100%;">
+                                          <option  name="ESTADO" value="S">Activo</option>
+                                          <option  name="ESTADO" value="N" selected>Inactivo</option>
+                                          
+                                        </select>
+                                        @endif
+                                       
                                         
                                         <br>
                                         <label>Verificación</label>
@@ -120,7 +147,7 @@
                                  </div>
                                  <div class="box-footer">
                                   <button type ='button' class="btn btn-danger " 
-                onclick="location.href = '{{Route('Usuarios.index')}}'">
+                onclick="location.href = '{{ URL::previous() }}'">
                 <span class="glyphicon glyphicon-remove"></span> Cancelar</button>
                                             <button type="submit" class="btn btn-primary pull-right">
                                                 <span class="glyphicon glyphicon-edit"></span>Actualizar usuario</button>

@@ -1,16 +1,5 @@
 @extends('layout')
 @section('contenido')
-@if (session('succes'))
-            <div class="alert alert-success">
-              {{session('succes')}}
-            </div>
-            @endif
-  @if (session('eliminar'))
-  <div class="alert alert-danger" role="alert">
-  {{session('eliminar')}}
-    </div>
-  @endif
-  
 
 <section class="content-header">
     <h1>
@@ -31,25 +20,24 @@
           <table id="example1" class="table table-bordered table-striped">
             <thead>
             <tr>
-              <th>NUMERO DE PEDIDO</th>
+              <th>EMPRESA</th>
               <th>PRODUCTO</th>
               <th>CANTIDAD</th>
-                           
+              <th>COSTO UNITARIO</th>
+              <th>TOTAL</th>
+                  
             </tr>
             </thead>
             <tbody>
             @foreach ($det_pedido as $pedido)         
               <tr>
-                <td>{{$pedido->IDPEDIDO}}</td>
-                @foreach ($productos as $producto)
-                @if($pedido->ID_PRODUCTO == $producto->IDPRODUCTO)
-              <td>{{ $producto->NOMBRE}}</td>
-             
-            
-              @endif
-              @endforeach
-              <td>{{$pedido->CANTIDAD}}</td>
-            
+                <td>{{$pedido->EMPRESA}}</td>
+                <td>{{ $pedido->NOMBRE_PRODUCTO}}</td> 
+                <td>{{ $pedido->CANTIDAD}}</td>
+                <td>{{ $pedido->COSTO_UNITARIO}}</td>
+                <td>{{ $pedido->TOTAL}}</td>
+           
+                        
                 </tr> 
               
               @endforeach    

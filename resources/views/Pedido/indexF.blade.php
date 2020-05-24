@@ -14,8 +14,11 @@
 
 <section class="content-header">
     <h1>
-      Pedidos Regitras
-      <small>Lista de Pedidos</small>
+      
+      <a style="color:black;" href="{{ URL::current() }}"> 
+        Pedidos enviados
+        </a>
+      <small>Lista de Pedidos enviados</small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -31,12 +34,14 @@
           <table id="example1" class="table table-bordered table-striped">
             <thead>
             <tr>
-              <th>USUARIO</th>
-              <th>DIRECCION</th>
+              <th>Usuario</th>
+              <th>Dirección</th>
               <th>SUBTOTAL</th>
               <th>COSTO ENVIO</th>
               <th>TOTAL</th>
               <th>FECHA CREACION</th>
+              <th>FECHA RECEPCION</th>
+              <th>FECHA ENTREGA</th>
 
               
             </tr>
@@ -44,24 +49,34 @@
             <tbody>
             @foreach ($pedidos as $pedido)         
               <tr>
-                @foreach ($usuarios as $usuario)
+           
+                @foreach($usuarios as $usuario)
                 @if($pedido->IDUSUARIO == $usuario->IDUSUARIO)
-              <td>{{ $usuario->NOMBRE}}</td>
+              <td>{{$usuario->NOMBRE}}</td>
               @endif
-              @endforeach
+              @endforeach  
               @foreach ($direcciones as $direccion)
               @if($pedido->IDDIRECCION == $direccion->IDDIRECCION)
                   <td>{{$direccion->DIRECCION}} </td>  
               @endif    
               @endforeach
+           
                   <td>{{$pedido->SUBTOTAL}}</td>
               <td>{{ $pedido->COSTO_ENVIO }}</td>
+              
               <td>{{$pedido->TOTAL}}</td>
               <td> {{$pedido->FECHA_CREACION}}</td>   
+              <td> {{$pedido->FECHA_RECEPCION}}</td>
+              <td> {{$pedido->FECHA_ENTREGA}}</td>
+              <td>
+                <a href="{{Route('detalleP',$pedido->IDPEDIDO)}}"> 
+                  <span title="Ver detalles" class="btn btn-primary btn-xs">Detalles</span></a>
+              
+              </td>
                 </tr> 
               
               @endforeach    
-                      
+              </tbody>
           </table>
         </div>
         <!-- /.box-body -->

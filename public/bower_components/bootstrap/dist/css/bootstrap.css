@@ -6831,4 +6831,41 @@ button.close {
     display: none !important;
   }
 }
+.creado { 
+  font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif; 
+  color: rgb(4, 59, 25); 
+  font-size: 10px; 
+  font-weight: 100; 
+  text-align: center; 
+  background: #b3e9c1; 
+  margin-left:300px;
+  width: 350px; 
+  overflow: hidden; 
+  padding: 10px; 
+  border-radius: 10px;}
+
+.eliminado { 
+  font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif; 
+  color: rgb(124, 2, 2); 
+  font-size: 10px; 
+  font-weight: 100; 
+  text-align: center; 
+  background: #eea5a5; 
+  margin-left:300px;
+  width: 350px; 
+  overflow: hidden; 
+  padding: 10px; 
+  border-radius: 10px;}
+  .informacion { 
+    font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif; 
+    color: rgb(124, 2, 2); 
+    font-size: 10px; 
+    font-weight: 100; 
+    text-align: center; 
+    background: #9cbfec; 
+    margin-left:300px;
+    width: 350px; 
+    overflow: hidden; 
+    padding: 10px; 
+    border-radius: 10px;}
 /*# sourceMappingURL=bootstrap.css.map */

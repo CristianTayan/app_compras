@@ -39,12 +39,6 @@
                              class="form-control">
                            </div>
                            <br>
-                           <label>Dirección</label>
-                           <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
-                             <input type="TEXT" name="DIRECCION"  class="form-control" >
-                           </div>
-                           <br>
                            
                            <label>Calle principal</label>
                            <div class="input-group">
@@ -64,12 +58,7 @@
                                <input type="text" name="NRO_DOMICILIO"  class="form-control">
                            </div>
                            <br>
-                           <label>Instrucciones</label>
-                           <div class="input-group">
-                               <span class="input-group-addon"><i class="fa fa-list-ol"></i></span>
-                               <textarea name="INSTRUCCIONES"  class="form-control"></textarea>
-                           </div>
-                           <br>
+                           
                         
                          </div>
                    </div>

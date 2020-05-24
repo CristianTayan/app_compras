@@ -5,10 +5,13 @@ namespace App\Http\Controllers\WEB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 class Cat_EmpresasController extends Controller {
     public function index() {
-        $categorias = DB::table( 'cat_empresas' )->get();
+        $categorias = DB::table( 'cat_empresas' )
+        ->orderBy('IDCATEGORIA', 'desc')->get();
         return view( 'Cat_Empresas.index', compact( 'categorias' ) );
     }
 
@@ -19,28 +22,33 @@ class Cat_EmpresasController extends Controller {
     }
 
     public function registrarCat( Request $request ) {
-
-        $NOMBRE = $request->NOMBRE;
-        $DETALLE = $request->DETALLE;
-        $FOTO = $request->FOTO;
-        $FOTO = 'categorias/'.$FOTO;
-
-        DB::table( 'cat_empresas' )->insert(
-            [
-                'NOMBRE' => $NOMBRE,
-                'DETALLE' => $DETALLE,
-                'FOTO' => $FOTO
-            ]
-        );
-        $mensaje = ['message' => 'Se registro exitosamente'];
-        return redirect( route( 'categorias.index' ) ) ->with( 'succes', 'Creado' );
+       
+        
+       
+        if($request->hasFile('FOTO')){
+            $NOMBRE = $request->NOMBRE;
+            $DETALLE = $request->DETALLE;
+         $archivo=$request->file('FOTO');
+        $FOTO=$archivo->getClientOriginalName();
+        $archivo->move(public_path().'/images/categoriasdeEmpresas/',$FOTO);
+        $FOTO='images/categoriasdeEmpresas/'.$FOTO;
+            DB::table( 'cat_empresas' )->insert(
+                [
+                    'NOMBRE' => $NOMBRE,
+                    'DETALLE' => $DETALLE,
+                    'FOTO' => $FOTO
+                ]
+            );
+            
+            return redirect( route( 'categorias.index' ) ) ->with( 'succes', 'Creado' );
+        }
     }
 
     public function eliminarCategoria( $ID ) {
 
         DB::table( 'cat_empresas' )->where( 'IDCATEGORIA', $ID ) ->delete();
         $mensaje = ['message' => 'Se elimino correctamente'];
-        return redirect( route( 'categorias.index' ) ) ->with( 'succes', 'Eliminado' );
+        return redirect( route( 'categorias.index' ) ) ->with( 'eliminado', 'Eliminado' );
 
     }
 
@@ -54,23 +62,40 @@ class Cat_EmpresasController extends Controller {
         $IDCATEGORIA = $request->IDCATEGORIA;
         $NOMBRE = $request->NOMBRE;
         $DETALLE = $request->DETALLE;
-        $FOTO = $request->FOTO;
-
-        $existe = DB::table( 'cat_empresas' )->where( 'IDCATEGORIA', $IDCATEGORIA )->get();
-        if ( count( $existe ) != 0 ) {
+        
+        if($request->hasFile('FOTO')){
+            
+         $archivo=$request->file('FOTO');
+        $FOTO=$archivo->getClientOriginalName();
+        $archivo->move(public_path().'/images/categoriasdeEmpresas/',$FOTO);
+        $FOTO='images/categoriasdeEmpresas/'.$FOTO;
+        DB::table( 'cat_empresas' )->where( 'IDCATEGORIA', $IDCATEGORIA )
+        ->update(
+            [
+                'NOMBRE' => $NOMBRE,
+                'DETALLE' => $DETALLE,
+                'FOTO' => $FOTO,
+            ]
+        );
+            
+            return redirect( route( 'categorias.index' ) ) ->with( 'informacion', 'Categoría actualizada' );
+        }  else{
+            $FOTO = $request->FOTOE;
             DB::table( 'cat_empresas' )->where( 'IDCATEGORIA', $IDCATEGORIA )
-            ->update(
-                [
-                    'NOMBRE' => $NOMBRE,
-                    'DETALLE' => $DETALLE,
-                    'FOTO' => $FOTO,
-                ]
-            );
-
-            $mensaje = ['message' => 'Se actualizo exitosamente'];
-            return redirect( route( 'categorias.index' ) ) ->with( 'succes', 'ACTUALIZADO' );
-        } else
-        $mensaje = ['message' => 'No se actualizo correctamente'];
-        return redirect( route( 'categorias.index' ) ) ->with( 'error', 'No exitoso' );
+        ->update(
+            [
+                'NOMBRE' => $NOMBRE,
+                'DETALLE' => $DETALLE,
+                'FOTO' => $FOTO,
+            ]
+        ); 
+        return redirect( route( 'categorias.index' ) ) ->with( 'informacion', 'Categoría actualizada' );
+        }
     }
+    public function indexCat($ID) {
+        $empresas = DB::table( 'empresa' )->Where('IDCATEGORIA',$ID)->get();
+        $categorias = DB::table('cat_empresas')->Where('IDCATEGORIA',$ID)->get();
+        $horarios = DB::table('horarios')->get();
+        return view( 'Cat_empresas.IndexEmpresaCat', compact( 'empresas','categorias','horarios') );
+    }   
 }

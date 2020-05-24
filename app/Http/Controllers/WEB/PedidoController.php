@@ -33,4 +33,12 @@ class PedidoController extends Controller
         return view( 'Pedido.indexA', compact( 'pedidos','usuarios','direcciones' ) );
     
     }
+
+    public function indexC() {
+        $pedidos = DB::table( 'pedido' )->where('ESTADO','C')->get();
+        $usuarios = DB::table('usuarios')->get();
+        $direcciones = DB::table('direcciones')->get(); 
+        return view( 'Pedido.indexA', compact( 'pedidos','usuarios','direcciones' ) );
+    
+    }
 }

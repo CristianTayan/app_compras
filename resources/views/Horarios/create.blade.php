@@ -8,6 +8,21 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title"> <b>Registrar horario</b> </h3>
+                    @if (session('succes'))
+  <div id="midiv" class="creado" role="alert">
+      {{session('succes')}}
+  </div>
+@endif
+@if (session('informacion'))
+<div id="midiv" class="informacion" role="alert">
+  {{session('informacion')}}
+</div>
+@endif
+@if (session('eliminar'))
+  <div id="midiv" class="eliminado" role="alert">
+     {{session('eliminar')}}
+  </div>
+@endif
                </div> 
                <div class="row">
                    <div class="box-header with-border">
@@ -19,52 +34,67 @@
                    
                         </div>
                        
-                        <div class="col-md-9">
+                        <div class="col-md-6">
                             @foreach ($horariosID as $id)
                    <input type="hidden" name="IDEMPRESA" value="{{$id->IDEMPRESA}}">
                        @endforeach
-                    <label for="exampleInputEmail1">Dia inicio</label>
-                     <select  name="DIA_INICIO" class="form-control">
-                     <option >Lunes</option>
-                     <option >Martes</option>
-                     <option >Miércoles</option>
-                     <option >Jueves</option>
-                     <option >Viernes</option>
-                     <option >Sábado</option>
-                     <option >Domingo</option>
+                    
+                       
+                       <div class="row">
+                        <h4 class="box-title">Día </h4> <br><br>
+                         <div class="col-md-6">
+                          <label >Inicio</label>
+                     <select  name="DIA_INICIO" class="form-control select2" id="diaInicio">
+                     <option value="Lunes">Lunes</option>
+                     <option value="Martes">Martes</option>
+                     <option value="Miércoles">Miércoles</option>
+                     <option value="Jueves">Jueves</option>
+                     <option value="Viernes">Viernes</option>
+                     <option value="Sábado">Sábado</option>
+                     <option value="Domingo" >Domingo</option>
                        </select>  
-                       <br>
-                       <label for="exampleInputEmail1">Dia fin</label>
-                     <select  name="DIA_FIN" class="form-control">
-                     <option >Lunes</option>
-                     <option >Martes</option>
-                     <option >Miércoles</option>
-                     <option >Jueves</option>
-                     <option >Viernes</option>
-                     <option >Sábado</option>
-                     <option >Domingo</option>
+                         </div>
+                         <div class="col-md-6">
+                          <label >Fin</label>
+                     <select  name="DIA_FIN" class="form-control select2" id="diaFin" disabled>
+                     
                        </select>  
-                       <br>
-                       <label>Hora inicio</label>
-                       <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-clock"></i></span>
-                         <input type="time" name="HORA_INICIO">
-                       </div>
-                       <br>
-                       <label>Hora inicio</label>
-                       <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-clock"></i></span>
-                         <input type="time" name="HORA_FIN">
-                       </div>
-                       <br>
+                      
+                         </div>
+                        <br><br>
                         
+                       </div>
+                       <br><br>
+                       <div class="row">
+                        <h4 class="box-title">Hora</h4><br><br>
+                         <div class="col-md-6">
+                          
+                          <label>Inicio</label>
+                          <input type="time" name="HORA_INICIO" class="form-control" id="horaInicio" disabled>
+                         </div>
+                         <div class="col-md-6">
+                          <label>Fin</label>
+                          <input type="time" name="HORA_FIN" class="form-control" id="horaFin" disabled>
+                         </div>
+                        
+                        
+                       </div>
+                       
+
+                        
+                  
                          </div>
                    </div>
 
                </div>
                
             <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Registrar horario</button>
+              <button type ='button' class="btn btn-danger btn-sm pull" 
+                onclick="location.href = '{{Route('Empresas.index')}}'">
+                <span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                
+                <button type="submit" class="btn btn-sm btn-primary pull-right">
+                  <span class="glyphicon glyphicon-floppy-saved"></span>Guardar horario</button>
            </div>
          </div> <!-- Para que todo este dentro del mismo modelo -->      
        </div> <!-- Para el tamaño de todo -->  

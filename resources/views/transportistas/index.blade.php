@@ -12,7 +12,6 @@
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
       <li><a href="">Tabla</a></li>
       <li class="active">Datos</li>
-     
     </ol>
 </section>
 <section class="content">
@@ -60,12 +59,9 @@
                 <img src="{{asset($transportista->FOTO)}}" style="width: 150px; height: 100px; object-fit: cover"></td>
               <td> <a href = "{{Route('Transportistas.editar',$transportista->IDTRANSPORTISTA)}}">  
                 <span class="btn btn-primary btn-xs	glyphicon glyphicon-edit"></span></a>
-              <a href = "{{Route('Transportistas.eliminar',$transportista->IDTRANSPORTISTA)}}"> 
+              <a onclick="return confirm('Desea eliminar')" href = "{{Route('Transportistas.eliminar',$transportista->IDTRANSPORTISTA)}}"> 
                   <span class = "btn btn-danger btn-xs glyphicon glyphicon-trash" ></span> </a></td>
                 </tr> 
-              
-              
-              
                 </tr> 
               
               @endforeach    

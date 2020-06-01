@@ -48,20 +48,15 @@
                        </div> 
                        <div class="row">
                            <div class="box-header with-border">
-                               
-                               
-                              <div class="col-md-3">
+                       <div class="col-md-3">
                             
-                                  <h4 class="box-title">Crear detalle</h4>
+                                  <h4 class="box-title">Crear o actualizar detalle</h4>
                            
                                 </div>
                                
                                 <div class="col-md-9">
                                   
                                 <input type="hidden" value="{{$producto->IDPRODUCTO}}" name="IDPRODUCTO">
-                                      
-                                  
-                      
                                    <label>Detalle</label>
                                                   <div class="input-group">
                                                    <span class="input-group-addon"><i class="fa fa-keyboard-o"></i></span>
@@ -70,22 +65,22 @@
                                                     name="DETALLE" 
                                                     class="form-control" 
                                                     placeholder="Detalle"
+                                                   value="{{Session::get('DetalleProdDetalle')}}" 
                                                     required>
                                                   </div>
                                                   <br>
-                                  <label>Costo</label>
+                                            <label>Costo</label>
                                                   <div class="input-group">
                                                    <span class="input-group-addon"><i class="fa  fa-dollar"></i></span>
                                                     <input 
                                                     type="text" 
                                                     name="COSTO"
-                                              
+                                                  value="{{ Session::get('DetalleProdCosto')}}"        
                                                     class="form-control" 
                                                     placeholder="Costo"
                                                     required>
                                                   </div>
-                                                  <br>
-                                                  
+                                                  <br>    
                                                   <button type="submit" class="btn btn-primary btn-sm pull-right">
                                                     <span class="glyphicon glyphicon-floppy-saved"></span>Guardar detalle</button>
                               </div>
@@ -99,93 +94,36 @@
                  </div> <!-- Para que todo este dentro del mismo modelo -->      
                </div> <!-- Para el tamaño de todo -->  
             </div>    <!-- Para que no se salga del contenido -->  
-           
-        
               </form>
               <div class="col-md-12">
-                <table id="example1" class="table table-bordered table-striped">
-                  <h4 class="box-title">Lista de detalles guardados </h4>
-                  <thead>
-                  <tr>
-                    <th>Nombre</th>
-                    <th>Costo</th>
-                    <th>ACCIONES</th>
-                    
-                  </tr>
-                  </thead>
-                  <tbody>
-                  @foreach ($detallesProductos as $detalle)         
-                    <tr>            
-                    <td>{{$detalle->NOMBRE}}</td>
-                    <td>{{$detalle->COSTO}}</td>
-                   
-                    <td> <a data-toggle="modal" data-target="#modal-default" href = "³">  
-                      <span class="btn btn-primary btn-xs	glyphicon glyphicon-edit"></span></a>
-                      <a href = "{{Route('Detallesproductos.eliminar',$detalle->IDDETALLE)}}"> 
-                        <span class = "btn btn-danger btn-xs glyphicon glyphicon-trash" ></span> </a> </td>
+                  <table id="example1" class="table table-bordered table-striped">
+                    <h4 class="box-title">Lista de detalles guardados </h4>
+                    <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Costo</th>
+                      <th>ACCIONES</th>
                       
-                 <form id="FormularioActualizar" method="get" action="#">
-                  {{ csrf_field() }}
-              <div class="modal fade" id="modal-default">
-                <div class="modal-dialog">
-                              <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title">Actualizar detalle</h4>
-                    </div>
-                    <div class="modal-body">
-                      
-                    <input type="text"id="DETALLESID" name="IDDETALLE" value="{{$detalle->IDDETALLE}}" class="form-control">
-
-                    <label>Detalle</label>
-                    <div class="input-group">
-                     <span class="input-group-addon"><i class="fa fa-keyboard-o"></i></span>
-                      <input 
-                      type="text" 
-                      name="DETALLE" 
-                      id="NOMBREDETALLE"
-                    value="{{$detalle->NOMBRE}}"
-                      class="form-control" 
-                      placeholder="Detalle"
-                      required>
-                    </div>
-                    <br>
-        <label>Costo</label>
-                    <div class="input-group">
-                     <span class="input-group-addon"><i class="fa  fa-dollar"></i></span>
-                      <input 
-                      type="text" 
-                      name="COSTO"
-                      id="COSTODETALLE"
-                      value="{{$detalle->COSTO}}"
-                      class="form-control" 
-                      placeholder="Costo"
-                      required>
-                    </div>
-                    <br>
-
-                    </div>
-                    <div class="modal-footer">
-                      <button  type="button" class="btn btn-default pull-left" data-dismiss="modal" id="limpiar">Cerrar</button>
-                      <button type="submit"  class="btn btn-primary">Actualizar</button>
-                    </div>
-                  </div>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($detallesProductos as $detalle)         
+                      <tr>            
+                      <td>{{$detalle->NOMBRE}}</td>
+                      <td>{{$detalle->COSTO}}</td>
+                     
+                      <td> <a href = "{{Route('Detallesproductos.actualizar',$detalle->IDDETALLE)}}" >  
+                        <span class="btn btn-primary btn-xs	glyphicon glyphicon-edit"></span></a>
+                        <a onclick="return confirm('Desea eliminar')" href = "{{Route('Detallesproductos.eliminar',$detalle->IDDETALLE)}}"> 
+                          <span class = "btn btn-danger btn-xs glyphicon glyphicon-trash" ></span> </a> </td> 
+                        </tr> 
+                      @endforeach    
+                      </tbody>
+                  </table>
+               
                 
-                  <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-              </div>
-             
-            </form>
-                      
-                   
-                      </tr> 
-                      </tr> 
-                    
-                    @endforeach    
-                    </tbody>
-                </table>
+                
+                
               </div>
           
           @foreach($empresas as $empresa)
@@ -198,4 +136,5 @@
         <!-- /.box-body -->
       </div>
 </section>
+
 @endsection

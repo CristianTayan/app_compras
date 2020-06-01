@@ -5,29 +5,35 @@ namespace App\Http\Controllers\WEB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Session;
 class TransportistasController extends Controller {
-  
+
     public function index() {
         $transportistas = DB::table( 'transportistas' )->get();
         return view( 'transportistas.index', compact( 'transportistas' ) );
     }
-    
-    public function vistaCrear(){
-        return view('transportistas.create');
+
+    public function vistaCrear() {
+        return view( 'transportistas.create' );
     }
-    
+
     public function registrarTransportista( Request $request ) {
-        
-       
+
+        $request->validate(
+            [
+                'CEDULA' => 'ecuador:ci'
+            ]
+        );
+
         $CEDULA = $request->CEDULA;
         $NOMBRE = $request->NOMBRE;
         $PLACA = $request->PLACA;
-        if($request->hasFile('FOTO')){
-            $archivo=$request->file('FOTO');
-        $FOTO=$archivo->getClientOriginalName();
-        $archivo->move(public_path().'/images/transportistas/',$FOTO);
-        $FOTO='images/transportistas/'.$FOTO;}
+        if ( $request->hasFile( 'FOTO' ) ) {
+            $archivo = $request->file( 'FOTO' );
+            $FOTO = $archivo->getClientOriginalName();
+            $archivo->move( public_path().'/images/transportistas/', $FOTO );
+            $FOTO = 'images/transportistas/'.$FOTO;
+        }
 
         DB::table( 'transportistas' )->insert(
             [
@@ -37,38 +43,47 @@ class TransportistasController extends Controller {
                 'PLACA' => $PLACA
             ]
         );
-        $mensaje = ['message' => 'Se registro exitosamente'];
+        
         return redirect( route( 'Transportistas.listar' ) ) ->with( 'succes', 'Transportista creado' );
     }
+
     public function eliminarTransportista( $ID ) {
 
         DB::table( 'transportistas' )->where( 'IDTRANSPORTISTA', $ID ) ->delete();
         $mensaje = ['message' => 'Se elimino correctamente'];
-        return redirect( route( 'Transportistas.listar' ) ) ->with( 'eliminado', 'Eliminado' );
+        return redirect( route( 'Transportistas.listar' ) ) ->with( 'eliminar', 'Eliminado' );
 
     }
-    public function vistaEditar($id){
-        $transportistas = DB::table('transportistas')->where('IDTRANSPORTISTA',$id)->get();
+
+    public function vistaEditar( $id ) {
+        $transportistas = DB::table( 'transportistas' )->where( 'IDTRANSPORTISTA', $id )->get();
         return view( 'transportistas.edit', compact( 'transportistas' ) );
     }
-    
+
     public function actualizarTransportista( Request $request ) {
-        
+
+        $request->validate(
+            [
+                'CEDULA' => 'ecuador:ci'
+            ]
+        );
+
         $IDTRANSPORTISTA = $request->IDTRANSPORTISTA;
         $CEDULA = $request->CEDULA;
         $NOMBRE = $request->NOMBRE;
         $PLACA = $request->PLACA;
-        if($request->hasFile('FOTO')){
-            $archivo=$request->file('FOTO');
-        $FOTO=$archivo->getClientOriginalName();
-        $archivo->move(public_path().'/images/transportistas/',$FOTO);
-        $FOTO='images/transportistas/'.$FOTO;} else{
+
+        if ( $request->hasFile( 'FOTO' ) ) {
+            $archivo = $request->file( 'FOTO' );
+            $FOTO = $archivo->getClientOriginalName();
+            $archivo->move( public_path().'/images/transportistas/', $FOTO );
+            $FOTO = 'images/transportistas/'.$FOTO;
+        } else {
             $FOTO = $request->FOTOE;
         }
-        
 
         DB::table( 'transportistas' )->where( 'IDTRANSPORTISTA', $IDTRANSPORTISTA )
-            ->update(
+        ->update(
             [
                 'CEDULA' => $CEDULA,
                 'NOMBRES' => $NOMBRE,

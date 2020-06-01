@@ -1499,7 +1499,7 @@
  * ------------
  */
 .skin-purple .main-header .navbar {
-  background-color: #605ca8;
+  background-color: #382fe6;
 }
 .skin-purple .main-header .navbar .nav > li > a {
   color: #ffffff;
@@ -1633,7 +1633,7 @@
  * ------------
  */
 .skin-purple-light .main-header .navbar {
-  background-color: #605ca8;
+  background-color: #A27ED4 ;
 }
 .skin-purple-light .main-header .navbar .nav > li > a {
   color: #ffffff;
@@ -1659,7 +1659,7 @@
   color: #fff;
 }
 .skin-purple-light .main-header .navbar .sidebar-toggle:hover {
-  background-color: #555299;
+  background-color: #7048A6;;
 }
 @media (max-width: 767px) {
   .skin-purple-light .main-header .navbar .dropdown-menu li.divider {
@@ -1669,16 +1669,16 @@
     color: #fff;
   }
   .skin-purple-light .main-header .navbar .dropdown-menu li a:hover {
-    background: #555299;
+    background: #7048A6;
   }
 }
 .skin-purple-light .main-header .logo {
-  background-color: #605ca8;
+  background-color: #7D50B9;
   color: #ffffff;
   border-bottom: 0 solid transparent;
 }
 .skin-purple-light .main-header .logo:hover {
-  background-color: #5d59a6;
+  background-color: #7048A6;
 }
 .skin-purple-light .main-header li.user-header {
   background-color: #605ca8;
@@ -1689,7 +1689,7 @@
 .skin-purple-light .wrapper,
 .skin-purple-light .main-sidebar,
 .skin-purple-light .left-side {
-  background-color: #f9fafc;
+  background-color: #fbf9fc;
 }
 .skin-purple-light .main-sidebar {
   border-right: 1px solid #d2d6de;
@@ -1778,5 +1778,22 @@
 @media (min-width: 768px) {
   .skin-purple-light.sidebar-mini.sidebar-collapse .sidebar-menu > li > .treeview-menu {
     border-left: 1px solid #d2d6de;
+  }
+  .btn-primary {
+    color: #fff;
+    background-color: #00BAE9 !important;
+    border-color: #00A0D7 !important;
+  }
+
+  .btn-danger {
+    color: rgb(230, 92, 92);
+    background-color: #fff !important;
+    border-color: rgb(230, 92, 92) !important;
+  }
+
+  .btn-success {
+    color: rgb(8, 241, 58) !important ;
+    background-color: #fff !important;
+    border-color: rgb(8, 241, 58) !important;
   }
 }

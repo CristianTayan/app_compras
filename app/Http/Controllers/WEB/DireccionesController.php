@@ -5,7 +5,7 @@ namespace App\Http\Controllers\WEB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Session;
 
 class DireccionesController extends Controller {
     public function vistaCrearDireccion( $IDUSUARIO ) {
@@ -20,7 +20,7 @@ class DireccionesController extends Controller {
         $COORDENADAY = $request-> COORDENADAY; 
         $CALLE_PRINCIPAL = $request-> CALLE_PRINCIPAL;
         $CALLE_SECUNDARIA = $request-> CALLE_SECUNDARIA;
-        $DIRECCION = $CALLE_PRINCIPAL.' y '.$CALLE_SECUNDARIA;
+        $DIRECCION = $CALLE_PRINCIPAL.' - '.$CALLE_SECUNDARIA;
         $NRO_DOMICILIO  = $request-> NRO_DOMICILIO;
         
       
@@ -62,7 +62,7 @@ class DireccionesController extends Controller {
         $COORDENADAY = $request-> COORDENADAY;
         $CALLE_PRINCIPAL = $request-> CALLE_PRINCIPAL;
         $CALLE_SECUNDARIA = $request-> CALLE_SECUNDARIA;
-        $DIRECCION = $CALLE_PRINCIPAL.' y '.$CALLE_SECUNDARIA;
+        $DIRECCION = $CALLE_PRINCIPAL.' - '.$CALLE_SECUNDARIA;
         $NRO_DOMICILIO  = $request-> NRO_DOMICILIO;
         $IDUSUARIO = $request-> IDUSUARIO;
       
@@ -104,6 +104,12 @@ class DireccionesController extends Controller {
     public function Vista_Actualizar_direcciones($IDDIRECCION){
         $DireccionEditar=DB::table('direcciones')
         ->where('IDDIRECCION',$IDDIRECCION)->get();
-        return view( 'Direcciones.edit', compact( 'DireccionEditar' ) );
+
+        foreach($DireccionEditar as $direccion){
+         $idUsuario=$direccion->IDUSUARIO;
+        }
+
+        $DatosUsuario=DB::table('usuarios')->where('IDUSUARIO',$idUsuario)->get();
+        return view( 'Direcciones.edit', compact( 'DireccionEditar','DatosUsuario' ) );
     }
 }

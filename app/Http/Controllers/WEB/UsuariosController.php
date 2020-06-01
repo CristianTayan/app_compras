@@ -7,12 +7,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Twilio\Rest\Client;
+use Session;
 
 class UsuariosController extends Controller {
 
-    public function listar_usuarios_U() {
+    public function listar_usuarios_U(Request $request) {
         $usuarios = DB::table( 'usuarios' )->where( 'TIPO_USUARIO', 'U' )->get();
         $direcciones = DB::table( 'direcciones' )->get();
+        $value=Session::get('statusActualizado');
+        
         return view( 'Usuarios.index', compact( 'usuarios', 'direcciones' ) );
     }
 
@@ -49,19 +52,14 @@ class UsuariosController extends Controller {
        
         $IDUSUARIO=$request->IDUSUARIO;
         $CODIGO=$request->CODIGO;
-        $confirmar= DB::table('usuarios')
-        ->where('IDUSUARIO',$IDUSUARIO)
-        ->where('CODIGO',$CODIGO)->get();
-        foreach($confirmar as $est){
-            $tipo=$est->TIPO_USUARIO; 
-         }
-         $TipoUs=DB::table('usuarios')
-         ->where('IDUSUARIO',$IDUSUARIO)->get();
-         foreach($TipoUs as $est){
-            $tipoUs=$est->TIPO_USUARIO; 
-         }
-        
-        if(count($confirmar)!=0){
+        $usuario=DB::table('usuarios')
+        ->where('IDUSUARIO',$IDUSUARIO)->get();
+        foreach($usuario as $user){
+            $tipo=$user->TIPO_USUARIO;
+            $estado=$user->ESTADO;
+            $codigo=$user->CODIGO;
+        }
+        if($codigo==$CODIGO && $estado=='N'){
             DB::table( 'usuarios' )
             ->where( 'IDUSUARIO', $IDUSUARIO )
             ->update(
@@ -79,16 +77,15 @@ class UsuariosController extends Controller {
             if ( $tipo == 'P' ) {
                 return redirect( route( 'Usuarios.indexP' ) )->with( 'succes', 'Proveedor verificado' );
             }
-            
-        } else{
-            if ( $tipoUs == 'U' ) {
-                return redirect( route( 'Usuarios.index' ) )->with( 'error', 'Usuario no verificado' );
+        }   else{
+            if ( $tipo == 'U' ) {
+                return redirect( route( 'Usuarios.index' ) )->with( 'informacion', 'Usuario no verificado' );
             }
-            if ( $tipoUs == 'A' ) {
-                return redirect( route( 'Usuarios.indexA' ) )->with( 'error', ' Administrador no verificado' );
+            if ( $tipo == 'A' ) {
+                return redirect( route( 'Usuarios.indexA' ) )->with( 'informacion', ' Administrador no verificado' );
             }
-            if ( $tipoUs == 'P' ) {
-                return redirect( route( 'Usuarios.indexP' ) )->with( 'error', 'Proveedor no' );
+            if ( $tipo == 'P' ) {
+                return redirect( route( 'Usuarios.indexP' ) )->with( 'informacion', 'Proveedor no' );
             }
         }   
     }
@@ -193,8 +190,7 @@ class UsuariosController extends Controller {
         $CORREO = $request->CORREO;
         $CELULAR = $request->CELULAR;
         $count = strlen( $CELULAR );
-        echo $count;
-        echo $IDUSUARIO;
+   
         if ( $count == 10 ) {
             $CELULAR = substr( $CELULAR, 1 );
             $CELULAR = '+593'.$CELULAR;
@@ -267,6 +263,10 @@ class UsuariosController extends Controller {
         $NOMBRE = $request->NOMBRE;
         $CORREO = $request->CORREO;
         $CELULAR = $request->CELULAR;
+        Session::put('nombreUsuario',$NOMBRE);
+        Session::put('correoUsuario',$CORREO);
+        Session::put('celularUsuario',$CELULAR);
+
         $CELULAR = substr( $CELULAR, 1 );
         $CELULAR = '+593'.$CELULAR;
         $CONTRASENA = base64_encode( $request->CONTRASENA );
@@ -314,7 +314,9 @@ class UsuariosController extends Controller {
 
                             ]
                         );
-
+                        Session::forget('nombreUsuario');
+                        Session::forget('correoUsuario');
+                        Session::forget('celularUsuario');
                         if ( $TIPO_USUARIO == 'U' ) {
                             return redirect( route( 'Usuarios.index' ) )->with( 'succes', 'Usuario creado' );
                         }
@@ -326,15 +328,15 @@ class UsuariosController extends Controller {
                         }
                     } else {
                         //CELULAR EXISTE
-                        return redirect( route( 'Usuarios.vista' ) )->with( 'informacion', 'El número celular ya se encuentra registrado' );
+                        return redirect( route( 'Usuarios.vista' ,$TIPO_USUARIO) )->with( 'informacion', 'El número celular ya se encuentra registrado' );
                     }
                 } else {
                     //CORREO EXISTE
-                    return redirect( route( 'Usuarios.vista' ) )->with( 'informacion', 'El correo ya se encuentra registrado' );
+                    return redirect( route( 'Usuarios.vista',$TIPO_USUARIO ) )->with( 'informacion', 'El correo ya se encuentra registrado' );
                 }
             } else {
                 //CORREO NO VALIDO
-                return redirect( route( 'Usuarios.vista' ) )->with( 'informacion', 'El correo no es válido' );
+                return redirect( route( 'Usuarios.vista',$TIPO_USUARIO ) )->with( 'informacion', 'El correo no es válido' );
             }
         }
         

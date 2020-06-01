@@ -9,6 +9,21 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title"> <b>Actualizar producto</b> </h3>
+                    @if (session('succes'))
+                    <div id="midiv" class="creado" role="alert">
+                        {{session('succes')}}
+                    </div>
+                  @endif
+                  @if (session('informacion'))
+                  <div id="midiv" class="informacion" role="alert">
+                    {{session('informacion')}}
+                  </div>
+                  @endif
+                  @if (session('eliminar'))
+                    <div id="midiv" class="eliminado" role="alert">
+                       {{session('eliminar')}}
+                    </div>
+                  @endif
                </div> 
                <div class="row">
                    <div class="box-header with-border">
@@ -20,7 +35,7 @@
                      <input type="hidden" value="{{$producto->IDPRODUCTO}}" name="IDPRODUCTO">
                         <label for="exampleInputEmail1">Categoria</label>
                            
-                        <select  name="IDCATEGORIA" class="form-control">
+                        <select  name="IDCATEGORIA" class="form-control select2">
                         <option >Seleccione una categoria</option>
                        @foreach($categorias as $categoria)
                         
@@ -85,7 +100,10 @@
                
             </div>
             <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Actualizar producto</button>
+              <button type ='button' class="btn btn-danger btn-sm " 
+                    onclick="location.href = '{{route('productos.listar',$producto->IDEMPRESA)}}'">
+                    <span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                <button type="submit" class="btn btn-sm btn-primary pull-right">Actualizar producto</button>
            </div>
          </div> <!-- Para que todo este dentro del mismo modelo -->      
        </div> <!-- Para el tamaño de todo -->  

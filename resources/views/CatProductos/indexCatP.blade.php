@@ -13,6 +13,21 @@
             @endforeach
   de empresa : {{$nombreEmpresa}}
   </h1>
+  @if (session('succes'))
+  <div id="midiv" class="creado" role="alert">
+      {{session('succes')}}
+  </div>
+@endif
+@if (session('informacion'))
+<div id="midiv" class="informacion" role="alert">
+  {{session('informacion')}}
+</div>
+@endif
+@if (session('eliminar'))
+  <div id="midiv" class="eliminado" role="alert">
+     {{session('eliminar')}}
+  </div>
+@endif
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
     <li><a href="">Tabla</a></li>
@@ -26,7 +41,8 @@
        
         <button class="btn btn-primary btn-sm pull-right" 
         value = 'Agregar categoría' onclick="location.href = '{{Route('CategoriaP.vistaCrear',$idempresa)}}'">
-        <span class="glyphicon glyphicon-plus"></span>Agregar categoria</button>
+        Agregar categoria
+        <span class="glyphicon glyphicon-plus"></span></button>
       </div>
         
      
@@ -58,9 +74,9 @@
               <td>{{ $categoria->DETALLE }}</td>
               
           <td>
-          <a href=""> 
-              <span name="ID" class="btn btn-info btn-xs	glyphicon glyphicon-edit"></span></a>
-          <a  href = ""> 
+            <a href="{{ Route( 'CategoriaProduto.VistaEmpresaProd',$categoria->IDCATEGORIA)}}"> 
+              <span name="ID" class="btn btn-primary btn-xs	glyphicon glyphicon-edit"></span></a>
+          <a onclick="return confirm('Desea eliminar')" href = "{{Route('CategoriaProducto.eliminarIndex',$categoria->IDCATEGORIA)}}"> 
               <span   class = "btn btn-danger btn-xs glyphicon glyphicon-trash" 
               ></span> </a>  </td>
            

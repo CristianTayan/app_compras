@@ -43,7 +43,8 @@
 
           <button class="btn btn-primary btn-sm pull-right" 
          value = 'Agregar categoría' onclick="location.href = '{{Route('productos.Crear',$idempresa)}}'">
-         <span class="glyphicon glyphicon-plus"></span>Agregar producto</button>
+         Agregar producto
+         <span class="glyphicon glyphicon-plus"></span></button>
          @if(count($productos) > 0) 
         </div>
        
@@ -52,7 +53,7 @@
           <table id="example1" class="table table-bordered table-striped">
             <thead>
             <tr>
-              <th>Categoria</th>
+              <th>Categoría</th>
               <th>Nombre</th>
               <th>Descripción</th>
               <th>Costo</th>
@@ -90,12 +91,12 @@
             
                   <td>
                     @if($producto->ESTADO == "S")
-                    <a  title="Cambiar estado a INACTIVO" href = "{{route('productos.estado',$producto->IDPRODUCTO)}}"> Activo
+                    <a onclick="return confirm('Cambiar estado a INACTIVO a : {{$producto->NOMBRE}}');"  title="Cambiar estado a INACTIVO" href = "{{route('productos.estado',$producto->IDPRODUCTO)}}"> Activo
                       <span  title="Cambiar estado a INACTIVO"  class = "fa fa-check" 
                     ></span> </a>
                     
                     @else
-                    <a style="color:rgb(248, 151, 131 );" title="Cambiar estado a ACTIVO" href = "{{route('productos.estado',$producto->IDPRODUCTO)}}">Inactivo
+                    <a onclick="return confirm('Cambiar estado ACTIVO a : {{$producto->NOMBRE}}');" style="color:rgb(248, 151, 131 );" title="Cambiar estado a ACTIVO" href = "{{route('productos.estado',$producto->IDPRODUCTO)}}">Inactivo
                     <span title="Cambiar estado a ACTIVO"  class = "fa fa-remove" 
                     ></span></a>
                    @endif 
@@ -115,7 +116,7 @@
                   <a  href = "{{Route('productos.Eliminar', $producto->IDPRODUCTO)}}"> 
                   <span  title="Eliminar producto" class = "btn btn-danger btn-xs glyphicon glyphicon-trash"></span> </a>  </td>
               @else
-              <a  href = "{{Route('productos.Eliminar', $producto->IDPRODUCTO)}}">
+              <a  onclick="return confirm('Desea eliminar')" href = "{{Route('productos.Eliminar', $producto->IDPRODUCTO)}}">
               <span title="Eliminar producto"  class = "btn btn-danger btn-xs glyphicon glyphicon-trash"></span> </a>  </td>
                   @endif
                           

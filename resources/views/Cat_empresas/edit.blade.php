@@ -1,5 +1,6 @@
 @extends('layout')
 @section('contenido')
+
 @foreach ($categorias as $cat)
 <section class="content-header">
     
@@ -11,7 +12,21 @@
                <div class="box box-primary">
                   <div class="box-header with-border">
                       <h3 class="box-title"> <b>Formulario de edición de categorías de empresas</b> </h3>
-                     
+                      @if (session('succes'))
+        <div id="midiv" class="creado" role="alert">
+            {{session('succes')}}
+        </div>
+      @endif
+      @if (session('informacion'))
+      <div id="midiv" class="informacion" role="alert">
+        {{session('informacion')}}
+      </div>
+      @endif
+      @if (session('eliminar'))
+        <div id="midiv" class="eliminado" role="alert">
+           {{session('eliminar')}}
+        </div>
+      @endif
                  </div> 
                     <div class="row">
                       <div class="box-header with-border">
@@ -27,7 +42,7 @@
                             <label>Nombre categoria</label>
                             <div class="input-group">
                              <span class="input-group-addon"><i class="fa  fa-list"></i></span>
-                              <input 
+                              <input required
                               type="text" 
                               name="NOMBRE"
                               value="{{ $cat->NOMBRE}}"
@@ -40,7 +55,7 @@
             <label>Detalle</label>
                             <div class="input-group">
                              <span class="input-group-addon"><i class="fa  fa-commenting"></i></span>
-                              <input 
+                              <input required
                               type="text" 
                               name="DETALLE"
                               value="{{ $cat->DETALLE}}"
@@ -68,10 +83,10 @@
   
                    
                  <div class="box-footer">
-                       <button type ='button' class="btn btn-danger " 
+                       <button type ='button' class="btn btn-danger btn-sm" 
                         onclick="location.href = '{{Route('categorias.index')}}'">
                           <span class="glyphicon glyphicon-remove"></span> Cancelar</button>
-                        <button type="submit" class="btn btn-primary pull-right">
+                        <button type="submit" class="btn btn-primary btn-sm pull-right">
                           <span class="glyphicon glyphicon-floppy-saved"></span>Guardar categoría</button>
                 </div>
              </div>

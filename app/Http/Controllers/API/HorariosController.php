@@ -84,21 +84,15 @@ class HorariosController extends Controller {
 
     public function abierto_cerrado( $IDEMPRESA ) {
        
-        $dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-        setlocale( LC_ALL, 'es_ES' );
-        $dia_actual = strftime( '%A' );
+        
+        setlocale( LC_ALL ,"es_es.utf-8"  );
+        $dia_actual = strftime( '%A');
         $dia_actual = ucwords( $dia_actual );
-        $hora_actual = date( 'H:i:s' );
-        $horarioEmpresa = DB::table( 'empresa' )
-        ->join( 'horarios', 'empresa.IDHORARIO', '=', 'horarios.IDHORARIO' )
+       
+        $horarioEmpresa = DB::table( 'horarios' )
         ->where( 'IDEMPRESA', $IDEMPRESA )
-        ->select(
-            'horarios.DIA_INICIO',
-            'horarios.DIA_FIN',
-            'horarios.HORA_INICIO',
-            'horarios.HORA_FIN'
-        )->get();
-
+        ->select()->get();
+        $dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
         $contarD = count( $dias );
         foreach ( $horarioEmpresa as $ho ) {
             $DIA_INICIO = $ho->DIA_INICIO;
@@ -118,6 +112,7 @@ class HorariosController extends Controller {
             for ( $i = 0; $i < $contarD; $i++ ) {
                 if ( $dias[$i] == $DIA_INICIO ) {
                     $diaIC = $i+1;
+                  
                 }
                 if ( $dias[$i] == $DIA_FIN ) {
                     $diaFC = $i+1;
@@ -125,18 +120,22 @@ class HorariosController extends Controller {
                 if ( $dias[$i] == $dia_actual ) {
                     $diaA = $i+1;
                 }
+                
             }
         }
+        
         if ( $diaIC <= $diaA && $diaFC >= $diaA ) {
             if ( $hactual >= $inicio && $hactual <= $fin ) {
+                
                 $mensaje = ['message' => 'Abierto'];
                 return response()->json( $mensaje, 200 );
             } else
             $mensaje = ['message' => 'Cerrado abre a las '. $HI.':'.$MI.' y cierra '.$HF.':'.$MF];
             return response()->json( $mensaje, 200 );
         } else {
+            
             $mensaje = ['message' => 'Cerrado abre de '.$DIA_INICIO.' a '.$DIA_FIN];
-            return response()->json( $mensaje, 200 );
+            return response()->json( $mensaje, 200,[],JSON_UNESCAPED_UNICODE );
         }
 
     }

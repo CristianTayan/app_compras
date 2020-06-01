@@ -1,19 +1,13 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/', function () {
-    return view('index');
-});
+    return view('auth/login');
+})->name('inicio');
+Route::get( 'Login/Acceso', 'Auth\LoginController@login' )->name('Login.Acceso');
+
+Route::group(['middleware' => 'LoginMiddleware'], function () {
+    Route::get( 'Login/Vista', 'WEB\LoginController@viewIndex')->name('Login.vista');
+
 //Usuarios
 Route::get('Usuarios.index','WEB\UsuariosController@listar_usuarios_U')->name('Usuarios.index');
 Route::get('Usuarios.indexA','WEB\UsuariosController@listar_usuarios_A')->name('Usuarios.indexA');
@@ -34,6 +28,12 @@ Route::get('Imagenes.indexE/{IDEMPRESA}/Verificar','WEB\ImagenesController@verif
 Route::get('Imagenes.index/listarProductos','WEB\ImagenesController@listar_productos')->name('Imagenes.index');
 Route::get('Imagenes.index/{IDPRODUCTOS}/VerificarProducto','WEB\ImagenesController@verificar_imagen_P')->name('Imagenes.verificarProducto');
 
+//Login
+
+Route::get( 'Login/VistaDenegado', 'WEB\LoginController@viewIndexDenegado' )->name('Login.vistaAuntentificacion');
+Route::get( 'Login/cerrarSesion', 'Auth\LoginController@Cerrar_Logout' )->name('Logout.Cerrar');
+
+
 //Empresas
 Route::get('Empresas.index/listarEmpresas','WEB\EmpresasController@index')->name('Empresas.index');
 Route::get('Empresas.create/crear','WEB\EmpresasController@vistaCrear')->name('Empresas.vistaCrear');
@@ -45,6 +45,11 @@ Route::post('Empresa.index/listar','WEB\EmpresasController@editarEmpresa')->name
 Route::get('Empresa.index/cambiarEstado/{IDEMPRESA}','WEB\EmpresasController@cambiar_estado_Empresa')->name('Empresas.cambiarEstadoEmpresa');
 Route::get('Empresa.index/agregar/{ID}','WEB\EmpresasController@vistaCrearEmpresaCat')->name('Empresas.agregarEmpCat');
 Route::post('EmpresaCat/agregar','WEB\EmpresasController@registrarE')->name('Empresas.registarE');
+
+Route::get('EditarCatEmpresas/{ID}/actualizar','WEB\EmpresasController@vistaEditarCatEmpresas')->name('Empresas.vistaEditarCat');
+Route::post('EmpresaCategorias/listar','WEB\EmpresasController@editarEmpresaCat')->name('Empresas.editarEmpresaCategorias');
+
+
 
 //Categorias
 Route::post('registrarCatEmp/registrar','WEB\Cat_EmpresasController@registrarCat')->name('Cat_Empresas.registrar');
@@ -62,6 +67,12 @@ Route::get('/Enproceso/Pedidos','WEB\PedidoController@indexP')->name('pedidosP')
 Route::get('/Entregados/Pedidos','WEB\PedidoController@indexF')->name('pedidosF');
 Route::get('/Anulados/Pedidos','WEB\PedidoController@indexA')->name('pedidosA');
 Route::get('/Encamino/Pedidos','WEB\PedidoController@indexC')->name('pedidosC');
+Route::get('/index/principal','WEB\PedidoController@indexPrincipal')->name('indexPrincipal');
+Route::get('/lista/enviadosEmpresa/{ID}','WEB\PedidoController@enviadosEmpresa')->name('enviadosEmpresa');
+Route::get('/lista/enProcesoEmpresa/{ID}','WEB\PedidoController@enProcesoEmpresa')->name('enProcesoEmpresa');
+Route::get('/lista/enCaminoEmrpesa/{ID}','WEB\PedidoController@enCaminoEmpresa')->name('enCaminoEmpresa');
+Route::get('/lista/finalizadosEmpresa/{ID}','WEB\PedidoController@finalizadosEmpresa')->name('finalizadosEmpresa');
+Route::get('/lista/anuladosEmpresa/{ID}','WEB\PedidoController@anuladosEmpresa')->name('anuladosEmpresa');
 
 //Detalles pedido
 Route::get('/DetallesPedidos/{idPedido}','WEB\DetallePedidoController@index')->name('detalleP');
@@ -71,6 +82,8 @@ Route::get('/DetallesPedidos/{idPedido}','WEB\DetallePedidoController@index')->n
 //Horarios
 Route::get('/RegistrarHorario/Crear','WEB\HorariosController@registrar_horarios')->name('Horarios.registrar');
 Route::get('/VistaCrearHorario/{IDEMPRESA}','WEB\HorariosController@vistaCrearHorario')->name('Horarios.vistaCrearHorario');
+Route::get('/EditarHorario/Actualizar','WEB\HorariosController@editar_horarios')->name('Horarios.actualizar');
+Route::get('/VistaActualizarHorario/{IDHorario}','WEB\HorariosController@vistaEditarHorario')->name('Horarios.vistaEditarHorario');
 
 //Categorias Productos
 Route::get('/listar/Catproductos/{id}','WEB\CatProductosController@index')->name('Catproductos.listar');
@@ -79,6 +92,14 @@ Route::get('/crear/CategoriaProductos/{id}','WEB\CatProductosController@vistaCre
 Route::get('/listar/CategoriaProductos/{id}','WEB\CatProductosController@indexCategoriaP')->name('CategoriaP.listar');
 Route::get('/registrar/Catproductos/{id}','WEB\CatProductosController@registrarCatProdEmp')->name('Catproductos.registrar');
 Route::get('/productos/empresa/{ID}','WEB\CatProductosController@productos')->name('productosEmpresa');
+Route::get('/edit/catProd/{ID}','WEB\CatProductosController@eliminarCategoriaProd')->name('CatProd.eliminar');
+Route::get('/editarCategoriaProducto/catProd','WEB\CatProductosController@editarCategoriaAdminstracion')->name('CatProdroductos.EditarAdministracion');
+Route::get('/EditarCategoriaProductos/Actualizar/{idCategoria}','WEB\CatProductosController@VistaCategoriasProductos')->name('CategoriaProductosVista');
+Route::get('/ActualizarCatPorductos/Actualizar/{idCategoria}','WEB\CatProductosController@VistaProductosCategoria')->name('CategoriaProduto.VistaEmpresaProd');
+Route::get('/ActualizarProductosCat/Procat','WEB\CatProductosController@ActualizarCategoriaEmpresa')->name('CatProdroductos.ActualizarAdministracionProd');
+Route::get('/eliminarCatProducto/{ID}', 'WEB\CatProductosController@eiminarCatProducto')->name('CategoriaProducto.eliminar');
+Route::get('/eliminarCatProductoindez/{ID}', 'WEB\CatProductosController@eiminarCatProductoIndex')->name('CategoriaProducto.eliminarIndex');
+
 
 
 //PRODUCTOS
@@ -96,6 +117,8 @@ Route::get('/vistaEditar/Producto/{id}','WEB\ProductosController@vistaEditarProd
 Route::get('/DetallesProductoslistar/{IDPRODUCTO}','WEB\DetallesProductosController@index')->name('Detallesproductos.listar');
 Route::get('/DetallesProductos/Registrar','WEB\DetallesProductosController@Registrar')->name('Detallesproductos.Registrar');
 Route::get('/DetallesProductoseliminar/{IDDETALLE}','WEB\DetallesProductosController@eliminar')->name('Detallesproductos.eliminar');
+Route::get('/DetallesProductosactualizar/{IDDETALLE}','WEB\DetallesProductosController@cargardatos')->name('Detallesproductos.actualizar');
+Route::get('/DetallesProductos/ActualizarInformacion','WEB\DetallesProductosController@Actualizar')->name('Detallesproductos.ActualizarInfo');
 
 //Direcciones editar_direcciones
 Route::get('/VistaCrearDirecciones/{IDUSUARIO}','WEB\DireccionesController@vistaCrearDireccion')->name('Direcciones.vistaCrearDireccion');
@@ -109,8 +132,20 @@ Route::get('/vista/Transportistas','WEB\TransportistasController@vistaCrear')->n
 Route::post('/registrar/Transportistas','WEB\TransportistasController@registrarTransportista')->name('Transportistas.registrar');
 Route::get('/eliminar/Transportistas/{id}','WEB\TransportistasController@eliminarTransportista')->name('Transportistas.eliminar');
 Route::get('/vistaeditar/Transportistas/{id}','WEB\TransportistasController@vistaEditar')->name('Transportistas.editar');
-Route::get('/actualizar/Transportistas','WEB\TransportistasController@actualizarTransportista')->name('Transportistas.actualizar');
+Route::post('/actualizar/Transportistas','WEB\TransportistasController@actualizarTransportista')->name('Transportistas.actualizar');
 
+Route::get('/rango/pedidos','WEB\PedidoController@rango')->name('RangoPedidosFin');
+
+//Widgets
+Route::get('/Usuario/total','WEB\PrincipalController@totalUsuario')->name('TotalUsuarios');
+
+//Reportes
+
+Route::get('/vista/reportes','WEB\ReportesController@vistaReporte')->name('vistaReportes');
+Route::get('/reporte/1','WEB\ReportesController@reporte1')->name('reporte1');
+Route::get('/reportes/2','WEB\ReportesController@reporte2')->name('reporte2');
+
+});
 
 
 

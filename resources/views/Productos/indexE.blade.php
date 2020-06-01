@@ -44,7 +44,7 @@
               
                 
                 <th style="text-align: center;">Empresa</th>
-                <th style="text-align: center;">Clasificacion Productos</th>
+                <th style="text-align: center;">Clasificación Productos</th>
               <th style="text-align: center;">Productos</th>         
  
             </tr>
@@ -57,8 +57,8 @@
               
                   <td >{{$empresa->NOMBRE}} </td>
                       <td style="text-align: center;">
-                        <a href="{{route('CategoriaP.listar',$empresa->IDEMPRESA)}}"> 
-                          <span name="ID" title="Ver las categorias de la empresa" class = "btn btn-primary btn-xs glyphicon glyphicon-list"> </span></a>
+                        <a href="{{route('CategoriaP.listar',$empresa->IDEMPRESA)}}">
+                          <span name="ID" title="Ver las categorias de la empresa" class = "btn.bg-purple.btn-flat btn-xs " style="margin-right: 15px"> Listar </span></a>
   
                         <a href="{{route('CategoriaP.vistaCrear',$empresa->IDEMPRESA)}}"> 
                         <span name="ID" title="Crear categoria" class = "btn btn-success btn-xs glyphicon glyphicon-plus"> </span></a>

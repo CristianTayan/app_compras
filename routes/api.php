@@ -106,3 +106,8 @@ Route::post( 'agregar_favorito', 'API\favoritosController@agregar_favorito' );
 Route::post( 'eliminar_favorito', 'API\favoritosController@eliminar_favorito' );
 Route::post( 'verificar_favorito', 'API\favoritosController@verificar_favorito' );
 
+//Tarifas
+
+Route::get( 'Valorde_Envio/{DistaciaPedido}', 'API\TarifasController@valor_envio');
+
+

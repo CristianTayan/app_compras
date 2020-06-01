@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use Session;
 
 class Cat_EmpresasController extends Controller {
     public function index() {
@@ -22,16 +23,20 @@ class Cat_EmpresasController extends Controller {
     }
 
     public function registrarCat( Request $request ) {
-       
-        
-       
-        if($request->hasFile('FOTO')){
-            $NOMBRE = $request->NOMBRE;
-            $DETALLE = $request->DETALLE;
+        $NOMBRE = $request->NOMBRE;
+        $DETALLE = $request->DETALLE; 
+        Session::put('nombreCategoria',$NOMBRE);
+        Session::put('descripcionCategoria',$DETALLE);
+        if($request->hasFile('FOTO')){      
          $archivo=$request->file('FOTO');
         $FOTO=$archivo->getClientOriginalName();
         $archivo->move(public_path().'/images/categoriasdeEmpresas/',$FOTO);
-        $FOTO='images/categoriasdeEmpresas/'.$FOTO;
+        $FOTO='images/categoriasdeEmpresas/'.$FOTO;}
+        else{
+            $FOTO = $request->FOTO; 
+        }
+        $existe_nombre=DB::table('cat_empresas')->where('NOMBRE',$NOMBRE)->get();
+        if(count($existe_nombre)==0){
             DB::table( 'cat_empresas' )->insert(
                 [
                     'NOMBRE' => $NOMBRE,
@@ -39,9 +44,14 @@ class Cat_EmpresasController extends Controller {
                     'FOTO' => $FOTO
                 ]
             );
-            
+            Session::forget('nombreCategoria');
+            Session::forget('descripcionCategoria');
             return redirect( route( 'categorias.index' ) ) ->with( 'succes', 'Creado' );
+        }else{
+            return redirect( route ('Cat_Empresas.vistaCrear')) ->with( 'informacion', 'Categoria ya existe' ); 
         }
+           
+        
     }
 
     public function eliminarCategoria( $ID ) {
@@ -62,35 +72,43 @@ class Cat_EmpresasController extends Controller {
         $IDCATEGORIA = $request->IDCATEGORIA;
         $NOMBRE = $request->NOMBRE;
         $DETALLE = $request->DETALLE;
-        
-        if($request->hasFile('FOTO')){
-            
+          if($request->hasFile('FOTO')){     
          $archivo=$request->file('FOTO');
-        $FOTO=$archivo->getClientOriginalName();
-        $archivo->move(public_path().'/images/categoriasdeEmpresas/',$FOTO);
-        $FOTO='images/categoriasdeEmpresas/'.$FOTO;
-        DB::table( 'cat_empresas' )->where( 'IDCATEGORIA', $IDCATEGORIA )
-        ->update(
-            [
-                'NOMBRE' => $NOMBRE,
-                'DETALLE' => $DETALLE,
-                'FOTO' => $FOTO,
-            ]
-        );
-            
-            return redirect( route( 'categorias.index' ) ) ->with( 'informacion', 'Categoría actualizada' );
-        }  else{
-            $FOTO = $request->FOTOE;
-            DB::table( 'cat_empresas' )->where( 'IDCATEGORIA', $IDCATEGORIA )
-        ->update(
-            [
-                'NOMBRE' => $NOMBRE,
-                'DETALLE' => $DETALLE,
-                'FOTO' => $FOTO,
-            ]
-        ); 
-        return redirect( route( 'categorias.index' ) ) ->with( 'informacion', 'Categoría actualizada' );
-        }
+           $FOTO=$archivo->getClientOriginalName();
+             $archivo->move(public_path().'/images/categoriasdeEmpresas/',$FOTO);
+              $FOTO='images/categoriasdeEmpresas/'.$FOTO;}else{
+                $FOTO = $request->FOTOE;}
+                $existe=DB::table('cat_empresas')->where('IDCATEGORIA',$IDCATEGORIA)->get();
+                foreach($existe as $exis){
+                    $nombre=$exis->NOMBRE;
+                }
+                if($nombre==$NOMBRE){
+                    DB::table( 'cat_empresas' )->where( 'IDCATEGORIA', $IDCATEGORIA )
+                    ->update(
+                        [
+                            'NOMBRE' => $NOMBRE,
+                            'DETALLE' => $DETALLE,
+                            'FOTO' => $FOTO,
+                        ]
+                    );
+                    return redirect( route( 'categorias.index' ) ) ->with( 'informacion', 'Categoría actualizada' );
+                }else{
+                    $nombre_existe=DB::table('cat_empresas')->where('NOMBRE',$NOMBRE)->get();
+                    if(count($nombre_existe)==0){
+                        DB::table( 'cat_empresas' )->where( 'IDCATEGORIA', $IDCATEGORIA )
+                        ->update(
+                            [
+                                'NOMBRE' => $NOMBRE,
+                                'DETALLE' => $DETALLE,
+                                'FOTO' => $FOTO,
+                            ]
+                        );
+                        return redirect( route( 'categorias.index' ) ) ->with( 'informacion', 'Categoría actualizada' );
+                    } else{
+                        return redirect( route('editarCat',$IDCATEGORIA) ) ->with( 'informacion', 'Categoría ya existe' );
+
+                    }
+                }         
     }
     public function indexCat($ID) {
         $empresas = DB::table( 'empresa' )->Where('IDCATEGORIA',$ID)->get();

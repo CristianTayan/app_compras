@@ -1,25 +1,36 @@
 @extends('layout')
 @section('contenido')
-@if (session('succes'))
-            <div class="alert alert-success">
-              {{session('succes')}}
-            </div>
-            @endif
-  @if (session('eliminar'))
-  <div class="alert alert-danger" role="alert">
-  {{session('eliminar')}}
-    </div>
+<section class="content-header">
+  @if(count($empresas)>=0 && count($empresas)!=1) 
+  <h1><a style="color:black;" href="{{ URL::current() }}"> 
+    Pedidos en camino</a></h1>
+    
   @endif
   
+      @if(count($empresas)==1)        
+      @foreach ($empresas as $empresa)
+      <h1><a style="color:black;" href="{{ URL::current() }}"> 
+        Pedidos en camino: {{$empresa->NOMBRE}} </a>
+            </h1>      
+       @endforeach 
+      @endif
 
-<section class="content-header">
-    <h1>
-      
-      <a style="color:black;" href="{{ URL::current() }}"> 
-        Pedidos enviados
-        </a>
-      <small>Lista de Pedidos en camino</small>
-    </h1>
+      @if (session('succes'))
+  <div id="midiv" class="creado" role="alert">
+      {{session('succes')}}
+  </div>
+@endif
+@if (session('informacion'))
+<div id="midiv" class="informacion" role="alert">
+  {{session('informacion')}}
+</div>
+@endif
+@if (session('eliminar'))
+  <div id="midiv" class="eliminado" role="alert">
+     {{session('eliminar')}}
+  </div>
+@endif
+   
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
       <li><a href="">Tabla</a></li>
@@ -32,15 +43,20 @@
 
         <div class="box-body">
           <table id="example1" class="table table-bordered table-striped">
+            @php
+            $subtotalE=0;
+            $costoE=0;
+            $totalE=0;
+          @endphp
             <thead>
             <tr>
-              <th>USUARIO</th>
-              <th>DIRECCION</th>
-              <th>SUBTOTAL</th>
-              <th>COSTO ENVIO</th>
-              <th>TOTAL</th>
-              <th>FECHA CREACION</th>
-              <th>FECHA RECEPCION</th>
+              <th>Usuario</th>
+              <th>Dirección</th>
+              <th>Subtotal</th>
+              <th>Costo envio</th>
+              <th>Total</th>
+              <th>Fecha creación</th>
+              <th>Fecha recepción</th>
 
 
               
@@ -75,12 +91,28 @@
               
 
                 </tr> 
+                @php
+                $subtotalE+=$pedido->SUBTOTAL;
+                $costoE+=$pedido->COSTO_ENVIO;
+                $totalE+=$pedido->TOTAL;
+              @endphp
+            @endforeach  
+          </tbody>  
+          <tfoot>
+            <tr>
+            <td></td>
               
-              @endforeach    
-              </tbody>
+              <td><b>Totales</b></td>
+              <td>{{$subtotalE}}</td>
+            <td>{{$costoE}}</td>
+            <td>{{$totalE}}</td>
+              </tr> 
+          </tfoot>
           </table>
+          <button type ='button' class="btn btn-default " 
+                onclick="location.href = '{{Route('indexPrincipal')}}'">
+                <span class="glyphicon glyphicon-chevron-left"></span> Atrás </button>
         </div>
-        <!-- /.box-body -->
       </div>
 </section>
 @endsection

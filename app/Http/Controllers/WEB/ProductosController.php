@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-
+use Session;
 class ProductosController extends Controller
 {
     public function index($id)
@@ -75,6 +75,9 @@ class ProductosController extends Controller
         $IDEMPRESA = $request->IDEMPRESA;
         $DESCRIPCION = $request->DESCRIPCION;
         $COSTO = $request->COSTO;
+        Session::put('nombreProductos',$NOMBRE);
+        Session::put('descripcionProductos',$DESCRIPCION);
+        Session::put('costoProducto',$COSTO);
         $ESTADO = 'S';
         $DETALLE = 'N';
         $CREATED_AT = Carbon::now();
@@ -98,7 +101,9 @@ class ProductosController extends Controller
                 'CREATED_AT' => $CREATED_AT
             ]
         );
-        $mensaje = ['message' => 'Se registro exitosamente'];
+        Session::forget('nombreProductos');
+        Session::forget('descripcionProductos');
+        Session::forget('costoProducto');
         return redirect( route( 'productos.listar',$IDEMPRESA ) ) ->with( 'succes', 'Producto creado' );
     }
 

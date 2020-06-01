@@ -4,7 +4,7 @@
 <section class="content-header">
       <a style="color:black ;" href="{{ URL::current() }}"> 
         @foreach($categorias as $categoria)
-        <h3> Empresas registradas en la categoría :  {{$categoria->NOMBRE}}</h3>
+        <h3> Empresas registradas en la categoría :  {{$categoria->NOMBRE}} </h3>
         @endforeach
         </a>  
     <ol class="breadcrumb">
@@ -14,6 +14,7 @@
     </ol>
 </section>
 <section class="content">
+ 
     <div class="box">
         <div class="box-header">
           <h3 class="box-title">Datos</h3>
@@ -32,13 +33,17 @@
              {{session('eliminar')}}
           </div>
         @endif
-          <button class="btn btn-primary btn-xs pull-right" 
-          value = 'Agregar categoría' onclick="location.href = '{{ route('Empresas.vistaCrear') }}'">Agregar empresa
-          <span class="btn btn-primary btn-sm glyphicon glyphicon-plus"></span></button>
+        <button class="btn btn-primary btn-sm pull-right" 
+        onclick="location.href = '{{Route('Empresas.agregarEmpCat',$categoria->IDCATEGORIA)}}'">
+       Agregar empresa
+       <span  class="glyphicon glyphicon-plus"></span> 
+      </button>
+          
         </div>
         <!-- /.box-header -->
         <div class="box-body">
           <table id="example1" class="table table-bordered table-striped">
+                
             <thead>
             <tr>          
               <th>Nombre</th>
@@ -49,39 +54,41 @@
  
             </tr>
             </thead>
-           
             <tbody>
               
               <tr>
                 @foreach ($empresas as $empresa)
-              
+                @php
+                $cont=0;
+                @endphp
                   <td>{{$empresa->NOMBRE}} </td>
                  
                   <td>{{ $empresa->DIRECCION }}</td>
                   @foreach($horarios as $horario)
-                   @php
-                    $cont=0;
-                    @endphp
-                    @if ($empresa->IDEMPRESA == $horario->IDEMPRESA)
-                    <td>{{$horario->HORARIO_CONCAT}} </td>
-                    @php
-                    $cont=1;
-                    @endphp
-                    @break
-                     @endif
-                   @endforeach
-
-                   @if( $cont==0)
-                   <td><a href="{{route('Horarios.vistaCrearHorario',$empresa->IDEMPRESA)}}"> 
-                    Agregar</a>
+                   
+                  @if ($empresa->IDEMPRESA == $horario->IDEMPRESA)
+                  <td>{{$horario->HORARIO_CONCAT}}
+                    <a href="{{route('Horarios.vistaEditarHorario',$horario->IDHORARIO)}}"> 
+                    <span title="Actualizar horario"><i class="fa fa-edit fa-lg"></i> </span>
+                    </a> </td>
+                  @php
+                  $cont=1;
+                  @endphp
+                  @break
                    @endif
+                 @endforeach
+
+                 @if($cont==0)
+                 <td><a href="{{route('Horarios.vistaCrearHorario',$empresa->IDEMPRESA)}}"> 
+                  Agregar</a>
+                 @endif
                 
               <td>
-              <a href="{{route('Empresas.vistaEditar',$empresa->IDEMPRESA)}}"> 
-                  <span title="Actualizar registro" class="btn btn-primary btn-xs	glyphicon glyphicon-edit"></span></a>
-              <a  href = "{{route('Empresas.eliminar',$empresa->IDEMPRESA)}}"> 
+              <a href="{{route('Empresas.vistaEditarCat',$empresa->IDEMPRESA)}}"> 
+                  <span title="Actualizar registro" class="btn btn-primary btn-xs	glyphicon glyphicon-pencil"></span></a>
+              <a onclick="return confirm('Desea eliminar')" href = "{{route('Empresas.eliminar',$empresa->IDEMPRESA)}}"> 
                   <span title="Eliminar registro"  class = "btn btn-danger btn-xs glyphicon glyphicon-trash" 
-                  onclick="return confirm('Borrar.{{$empresa->NOMBRE}}');"></span> </a>  </td>
+                  ></span> </a>  </td>
               
              
       

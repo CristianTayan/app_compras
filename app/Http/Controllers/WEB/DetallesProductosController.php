@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WEB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Session;
 class DetallesProductosController extends Controller
 {
     public function index($IDPRODUCTO)
@@ -15,6 +16,7 @@ class DetallesProductosController extends Controller
         ->join ( 'productos', 'empresa.IDEMPRESA', '=', 'productos.IDEMPRESA' )
         ->where( 'IDPRODUCTO', $IDPRODUCTO )
         ->get();
+        
         return view('DetallesProducto.index', compact('detallesProductos','productos','empresas'));
     }
 
@@ -22,6 +24,10 @@ class DetallesProductosController extends Controller
         $IDPRODUCTO=$request->IDPRODUCTO;
         $DETALLE=$request->DETALLE;
         $COSTO=$request->COSTO;
+        Session::put('DetalleProdDetalle',$DETALLE);
+        Session::put('DetalleProdCosto',$COSTO);
+        Session::put('DetalleProdID',$IDPRODUCTO);
+
         DB::table( 'detalles_producto' )->insert(
             [
                 'IDPRODUCTO' => $IDPRODUCTO,
@@ -29,8 +35,28 @@ class DetallesProductosController extends Controller
                 'COSTO' => $COSTO
             ]
         );
-
+        Session::forget('DetalleProdDetalle');
+        Session::forget('DetalleProdCosto');
+        Session::forget('DetalleProdID');
         return redirect( route( 'Detallesproductos.listar',$IDPRODUCTO ) ) ->with( 'succes', 'Detalle producto creado' );
+    }
+    public function Actualizar(Request $request){
+     
+        $DETALLE=$request->DETALLE;
+        $COSTO=$request->COSTO;
+        $IDDETALLE=$request->IDDETALLE;
+        $IDPRODUCTO=$request->IDPRODUCTO;
+        DB::table( 'detalles_producto' )
+        ->where('IDDETALLE',$IDDETALLE)
+        ->update(
+            [
+                
+                'NOMBRE' => $DETALLE,
+                'COSTO' => $COSTO
+            ]
+        );
+
+        return redirect( route( 'Detallesproductos.listar',$IDPRODUCTO ) ) ->with( 'succes', 'Detalle producto actualizado' );
     }
     public function eliminar($IDDETALLE){
        $listaID=DB::table( 'detalles_producto')->where('IDDETALLE',$IDDETALLE)->get();
@@ -41,5 +67,15 @@ class DetallesProductosController extends Controller
 
         return redirect( route( 'Detallesproductos.listar',$IDPRODUCTO ) ) ->with( 'eliminado', 'Eliminado' );
     }
+    public function cargardatos($IDDETALLE){
+        $datos=DB::table( 'detalles_producto' )
+        ->where('IDDETALLE',$IDDETALLE)->get();
+        
+        $productos = DB::table( 'detalles_producto' )
+        ->join ( 'productos', 'detalles_producto.IDPRODUCTO', '=', 'productos.IDPRODUCTO' )
+        ->where( 'IDDETALLE', $IDDETALLE )
+        ->get();
     
+        return view('DetallesProducto.edit', compact('datos','productos'));
+    }
 }

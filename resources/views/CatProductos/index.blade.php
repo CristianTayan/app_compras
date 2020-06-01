@@ -66,11 +66,11 @@
                             
                                   <label>NOMBRE</label>
                                   <div class="input-group">
-                                   <span class="input-group-addon"><i class="fa  fa-commenting"></i></span>
+                                   <span class="input-group-addon"><i class="fa  fa-keyboard-o"></i></span>
                                     <input 
                                     type="text" 
                                     name="NOMBRE"
-                              
+                                    value="{{Session::forget('CatProdNombre')}}"
                                     class="form-control" 
                                     placeholder="Nombre Categoria"
                                   >
@@ -79,16 +79,17 @@
               
                   <label>DETALLE</label>
                                   <div class="input-group">
-                                   <span class="input-group-addon"><i class="fa  fa-commenting"></i></span>
+                                   <span class="input-group-addon"><i class="fa  fa-list"></i></span>
                                     <input 
                                     type="text" 
                                     name="DETALLE"
-                              
+                                    value="{{Session::forget('CatProdDetalle')}}"
                                     class="form-control" 
                                     placeholder="Detalle">
                                   </div>
                                   <br>
-                                  <button type="submit" class="btn btn-primary pull-right">Registrar categoría</button>
+                                  <button type="submit" class="btn btn-primary btn-sm pull-right">
+                                    <span class="glyphicon glyphicon-floppy-saved"></span>Guardar categoría</button>
                                </div>
                          </div>
                          
@@ -124,9 +125,9 @@
                   <td>{{ $categoria->DETALLE }}</td>
                   
               <td>
-              <a href=""> 
-                  <span name="ID" class="btn btn-info btn-xs	glyphicon glyphicon-edit"></span></a>
-              <a  href = ""> 
+                <a href="{{ Route( 'CategoriaProductosVista',$categoria->IDCATEGORIA)}}"> 
+                  <span name="ID" class="btn btn-primary btn-xs	glyphicon glyphicon-edit"></span></a>
+              <a onclick="return confirm('Desea eliminar')" href = "{{Route('CategoriaProducto.eliminar',$categoria->IDCATEGORIA)}}"> 
                   <span   class = "btn btn-danger btn-xs glyphicon glyphicon-trash" 
                   ></span> </a>  </td>
                
@@ -136,7 +137,7 @@
             </tbody>
           </table>
           <button type ='button' class="btn btn-default " 
-                onclick="location.href = '{{ URL::previous() }}'">
+                onclick="location.href = '{{Route('productos.Crear',$idempresa)}}'">
                 <span class="glyphicon glyphicon-chevron-left"></span> Atrás </button>
         </div>
         <!-- /.box-body -->

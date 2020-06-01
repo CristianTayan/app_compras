@@ -1,3 +1,6 @@
+@php
+ session()->start();  
+@endphp
 <aside class="main-sidebar">
 
     <!-- sidebar: style can be found in sidebar.less -->
@@ -21,6 +24,7 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">Administrador</li>
         <!-- Optionally, you can add icons to the links -->
+        <li class="{{ !Route::is('Login.vista') ?: 'active'}}"><a href="{{Route('Login.vista')}}"><i class="fa fa-home"></i> <span>Home</span></a></li>
 
         <li class="treeview {{ !Route::is('Usuarios.index') ?: 'active' }} || {{!Route::is('Usuarios.indexA') ?: 'active'}} || {{!Route::is('Usuarios.indexP') ?: 'active'}}">
           <a href="{"><i class="fa fa-user"></i> <span>Usuarios</span>
@@ -51,26 +55,17 @@
           <li class="{{ !Route::is('Imagenes.index') ?: 'active'}}"><a href="{{Route('Imagenes.index')}}">Productos</a></li> 
         </ul>
       </li>-->
-      <li class="treeview {{ !Route::is('pedidosE') ?: 'active' }} || {{!Route::is('pedidosP') ?: 'active'}}
-       || {{!Route::is('pedidosF') ?: 'active'}} || {{!Route::is('pedidosA') ?: 'active'}}">
-        <a href=""><i class="fa fa-send "></i> <span>Pedido</span>
-          <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+      <li  {{ !Route::is('pedidosE') ?: 'active' }} || {{!Route::is('pedidosP') ?: 'active'}}
+       || {{!Route::is('pedidosC') ?: 'active'}} || {{!Route::is('pedidosF') ?: 'active'}} || {{!Route::is('pedidosA') ?: 'active'}} ">
+        <a href="{{Route('indexPrincipal')}}"><i class="fa fa-send "></i> <span>Pedidos</span>
+         
         </a>
-        <ul class="treeview-menu">
-          <li class="{{ !Route::is('pedidosE') ?: 'active' }}"><a href="{{Route('pedidosE')}}">Pedidos enviados</a></li>
-          <li class="{{ !Route::is('pedidosP') ?: 'active' }}"><a href="{{Route('pedidosP')}}">Pedidos en proceso</a></li>
-          <li class="{{ !Route::is('pedidosF') ?: 'active' }}"><a href="{{Route('pedidosF')}}">Pedidos Finalizados</a></li>
-          <li class="{{  Route::is('pedidosA') ?: 'active' }}"><a href="{{Route('pedidosA')}}">Pedidos Anulados</a></li>
         
-        </ul>
 
       </li>
     
     <li class="{{ !Route::is('Transportistas.listar') ?: 'active'}}"><a href="{{Route('Transportistas.listar')}}"><i class="fa fa-car"></i> <span>Transportistas</span></a></li>
-    </ul>
-      <!-- /.sidebar-menu -->
+    <li class=""><a  href="{{Route('vistaReportes')}}"><i class="fa fa-file-pdf-o"></i> <span>Reportes</span></a></li>  
+  </ul>
     </section>
-    <!-- /.sidebar -->
   </aside>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Twilio\Rest\Client;
+use Session;
 
 class ImagenesController extends Controller {
     public function listar_empresas() {

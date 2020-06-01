@@ -3,11 +3,35 @@
 <section class="content-header">
   <form role="form" method="post" action=" {{Route('Transportistas.registrar')}}" enctype="multipart/form-data">
     {{ csrf_field() }}
-    <div class="row"> 
+
+    
+@error('CEDULA')
+<div class="eliminado" id="midiv">
+  Cedula no valida o repetida
+
+</div>
+@enderror
+
+        <div class="row"> 
         <div class="col-md-12"> 
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title"> <b>Registrar transportistas</b> </h3>
+                    @if (session('succes'))
+                    <div id="midiv" class="creado" role="alert">
+                        {{session('succes')}}
+                    </div>
+                  @endif
+                  @if (session('informacion'))
+                  <div id="midiv" class="informacion" role="alert">
+                    {{session('informacion')}}
+                  </div>
+                  @endif
+                  @if (session('eliminar'))
+                    <div id="midiv" class="eliminado" role="alert">
+                       {{session('eliminar')}}
+                    </div>
+                  @endif
                </div> 
                <div class="row">
                    <div class="box-header with-border">
@@ -26,8 +50,9 @@
                             <input 
                             type="text" 
                             name="CEDULA"
-                            
+                            value="{{ old('CEDULA')}}"
                             class="form-control" 
+                            maxlength="10"
                             placeholder="1001111111"
                             title="El nombre no puede contener números">
                           </div>
@@ -39,6 +64,7 @@
                                             <input 
                                             type="text" 
                                             name="NOMBRE"
+                                          value="{{ old('NOMBRE')}}"
                                             pattern= "^[a-zA-Z ]*$" 
                                             class="form-control" 
                                             placeholder="Nombre"
@@ -51,7 +77,7 @@
                                             <input 
                                             type="text" 
                                             name="PLACA"
-                                      
+                                            value="{{ old('PLACA')}}"
                                             class="form-control" 
                                             placeholder="PLACA"
                                             title="El nombre no puede contener números">
@@ -59,9 +85,11 @@
                                           <br>
                                           
                           <label for="exampleInputFile">FOTO</label>
-                          <div id="preview"></div>
-                            <input accept="image/*" type="file" id="FOTO" name="FOTO"  >
-                      </div>
+                          <div id="preview">
+                          </div>
+                          <input  accept="image/*" type="file" id="FOTO" name="FOTO"  >
+
+                          </div>
                         
                          </div>
                    </div>

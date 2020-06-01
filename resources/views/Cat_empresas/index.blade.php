@@ -7,7 +7,7 @@
       Categorías de empresa
       </a>
     
-    <small>Lista de categorías de empresas registradas</small>
+    <small>Lista de categorías de empresas registradas  </small>
   </h1>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -64,8 +64,8 @@
             <td>{{$categoria->DETALLE}}</td>
             <td><img src="{{asset($categoria->FOTO)}}" style="width: 120px; height: 100px; object-fit: cover"></td>
             <td><a href=" {{route('editarCat',$categoria->IDCATEGORIA)}}"> 
-            <span name="ID" title="Actualizar información " class="btn btn-primary btn-xs	glyphicon glyphicon-edit"></span></a>
-            <a  href = " {{route('eliminarCat',$categoria->IDCATEGORIA)}}"> 
+            <span name="ID" title="Actualizar información " class="btn btn-primary btn-xs	glyphicon glyphicon-pencil"></span></a>
+            <a onclick="return confirm('Desea eliminar')" href = " {{route('eliminarCat',$categoria->IDCATEGORIA)}}"> 
             <span title="Eliminar el registro "  class = "btn btn-danger btn-xs glyphicon glyphicon-trash"></span> </a>
                        </td>
             <td>

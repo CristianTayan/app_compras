@@ -2,13 +2,34 @@
 @section('contenido')
 <section class="content-header">
   @foreach ($transportistas as $transportista)
-        <form role="form" method="get" action="{{Route('Transportistas.actualizar')}}">
+        <form role="form" method="post" action="{{Route('Transportistas.actualizar')}}" enctype="multipart/form-data">
           {{ csrf_field() }}
+          @error('CEDULA')
+<div class="eliminado" id="midiv">
+  Cedula no valida
+
+</div>
+@enderror
           <div class="row"> 
               <div class="col-md-12"> 
                   <div class="box box-primary">
                       <div class="box-header with-border">
                           <h3 class="box-title"> <b>Formulario de actualización de transportistas</b> </h3>
+                          @if (session('succes'))
+                          <div id="midiv" class="creado" role="alert">
+                              {{session('succes')}}
+                          </div>
+                        @endif
+                        @if (session('informacion'))
+                        <div id="midiv" class="informacion" role="alert">
+                          {{session('informacion')}}
+                        </div>
+                        @endif
+                        @if (session('eliminar'))
+                          <div id="midiv" class="eliminado" role="alert">
+                             {{session('eliminar')}}
+                          </div>
+                        @endif
                      </div> 
                      <div class="row">
                          <div class="box-header with-border">
@@ -31,6 +52,7 @@
                                   value="{{$transportista->CEDULA}}"
                                   class="form-control" 
                                   placeholder="1001111111"
+                                  maxlength="10"
                                   title="El nombre no puede contener números">
                                 </div>
                                 <br>
@@ -63,13 +85,14 @@
                                                 
                                 <label for="exampleInputFile">FOTO</label>
                                
-                         <img src="{{asset($transportista->FOTO)}}" style="width: 120px; height: 100px; object-fit: cover">
-                         <br>
-                         <label> Imagen actualizada</label><br>
-                         <div id="preview">   
-                         </div>
-                          <input type="file"    name="FOTO" id="FOTO">
-                          <input type="hidden" value="{{ $transportista->FOTO }}" name="FOTOE">
+                                <img src="{{asset($transportista->FOTO)}}" style="width: 120px; height: 100px; object-fit: cover">
+                                <br>
+                                <label> Imagen actualizada</label><br>
+                                <div id="preview">   
+                                </div>
+                                 <input type="file" name="FOTO" id="FOTO">
+                                     <input type="hidden" value="{{ $transportista->FOTO }}" name="FOTOE">
+                                     <br>
                             </div>
                               
                                </div>

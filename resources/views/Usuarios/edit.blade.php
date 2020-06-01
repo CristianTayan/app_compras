@@ -1,10 +1,6 @@
+
 @extends('layout')
 @section('contenido')
-    @if (session('Info'))
-         <div class="alert alert-info" role="alert">
-            {{session('Info')}}
-        </div>
-    @endif
 @foreach ($Usuarios as $usuario)
         <section class="content-header">
             <form method="get" action="{{ route('Usuarios.actualizar') }}">
@@ -14,6 +10,11 @@
                         <div class="box box-primary">
                             <div class="box-header with-border">
                                 <h3 class="box-title"> <b>Formulario de edición de usuarios</b> </h3>
+                                @if (session('informacion'))
+                      <div id="midiv" class="informacion" role="alert">
+                        {{session('informacion')}}
+                      </div>
+                      @endif
                            </div> 
                                    <div class="row">
                                     <div class="box-header with-border">
@@ -90,21 +91,21 @@
                                         <label>Tipo de Usuario</label>
                                         
                                         @if ($usuario->TIPO_USUARIO=='A')
-                                        <select  class="form-control" name="TIPO_USUARIO" style="width: 100%;">
+                                        <select  class="form-control select2" name="TIPO_USUARIO" style="width: 100%;">
                                           <option  name="TIPO_USUARIO" value="U" >Usuario aplicación</option>
                                           <option  name="TIPO_USUARIO" value="A" selected>Administrador</option>
                                           <option name="TIPO_USUARIO" value="P">Proveedor</option>
                                         </select>  
                                         @endif
                                         @if ($usuario->TIPO_USUARIO=='P')
-                                        <select class="form-control" name="TIPO_USUARIO" style="width: 100%;">
+                                        <select class="form-control select2" name="TIPO_USUARIO" style="width: 100%;">
                                           <option  name="TIPO_USUARIO" value="U">Usuario aplicación</option>
                                           <option  name="TIPO_USUARIO" value="A" >Administrador</option>
                                           <option name="TIPO_USUARIO" value="P" selected>Proveedor</option>
                                         </select>  
                                         @endif
                                         @if ($usuario->TIPO_USUARIO=='U')
-                                        <select class="form-control" name="TIPO_USUARIO" style="width: 100%;">
+                                        <select class="form-control select2" name="TIPO_USUARIO" style="width: 100%;">
                                           <option  name="TIPO_USUARIO" value="U" selected>Usuario aplicación</option>
                                           <option  name="TIPO_USUARIO" value="A" >Administrador</option>
                                           <option name="TIPO_USUARIO" value="P" >Proveedor</option>
@@ -114,14 +115,14 @@
                                         <br>
                                         <label>Estado</label>
                                         @if($usuario->ESTADO=='S')
-                                        <select class="form-control" name="ESTADO" style="width: 100%;">
+                                        <select class="form-control select2" name="ESTADO" style="width: 100%;">
                                           <option  name="ESTADO" value="S" selected>Activo</option>
                                           <option  name="ESTADO" value="N">Inactivo</option>
                                           
                                         </select>
                                         @endif
                                         @if($usuario->ESTADO=='N')
-                                        <select class="form-control" name="ESTADO" style="width: 100%;">
+                                        <select class="form-control select2" name="ESTADO" style="width: 100%;">
                                           <option  name="ESTADO" value="S">Activo</option>
                                           <option  name="ESTADO" value="N" selected>Inactivo</option>
                                           
@@ -146,9 +147,22 @@
                                      </div>
                                  </div>
                                  <div class="box-footer">
-                                  <button type ='button' class="btn btn-danger " 
-                onclick="location.href = '{{ URL::previous() }}'">
-                <span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                                   @if($usuario->TIPO_USUARIO=='A')
+                                   <button type ='button' class="btn btn-danger " 
+                                   onclick="location.href = '{{ Route('Usuarios.indexA') }}'">
+                                   <span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                                   @endif
+                                   @if($usuario->TIPO_USUARIO=='P')
+                                   <button type ='button' class="btn btn-danger " 
+                                   onclick="location.href = '{{ Route('Usuarios.indexP') }}'">
+                                   <span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                                   @endif
+                                   @if($usuario->TIPO_USUARIO=='U')
+                                   <button type ='button' class="btn btn-danger " 
+                                   onclick="location.href = '{{ Route('Usuarios.index') }}'">
+                                   <span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                                   @endif
+                                  
                                             <button type="submit" class="btn btn-primary pull-right">
                                                 <span class="glyphicon glyphicon-edit"></span>Actualizar usuario</button>
                                </div>

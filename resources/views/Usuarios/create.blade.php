@@ -1,3 +1,4 @@
+
 @extends('layout')
 @section('contenido')
 <section class="content-header">
@@ -9,6 +10,11 @@
               <div class="box box-primary">
                   <div class="box-header with-border">
                       <h3 class="box-title"> <b>Registrar usuario</b> </h3>
+                      @if (session('informacion'))
+                      <div id="midiv" class="informacion" role="alert">
+                        {{session('informacion')}}
+                      </div>
+                      @endif
                      
                  </div> 
                  <div class="row">
@@ -28,7 +34,9 @@
                           <input 
                           type="text" 
                           name="NOMBRE" 
+                          value="{{Session::get('nombreUsuario')}}"
                           pattern= "^[a-zA-Z ]*$" 
+                          
                           class="form-control" 
                           placeholder="Nombre"
                           title="El nombre no puede contener números" required>
@@ -38,12 +46,10 @@
                          <label>Correo</label>
                          <div class="input-group"> 
                           <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                          <input type="email" name="CORREO" class="form-control" placeholder="Correo" required>
+                          <input type="email" name="CORREO" value="{{ Session::get('correoUsuario')}}"class="form-control" placeholder="Correo" required>
                          </div>
                          <br>
-              
-                        
-                          <label>Celular</label>
+                   <label>Celular</label>
                           <div class="input-group">
                             <div class="input-group-addon">
                               <i class="fa fa-phone"></i>
@@ -51,9 +57,11 @@
                             <input 
                             type="text" 
                             pattern= "(09)[0-9]{8}" 
+                            maxlength="10"
                             name="CELULAR" 
+                            value="{{ Session::get('celularUsuario')}}"
                             class="form-control"
-                            title="El numero celular debe iniciar con 09 y contener 10 números. Ejm:09xxxxxxxx" required>
+                            title="El numero celular debe iniciar con 09 y contener 10 números. Ejm:09xxxxxxxx" placeholder="Celular" required>
                           </div>
                           <br>
               
@@ -62,7 +70,7 @@
                           <div class="input-group-addon">
                             <i class="fa fa-key"></i>
                           </div>
-                          <input type="password" name="CONTRASENA" class="form-control" required>
+                          <input type="password" name="CONTRASENA"  class="form-control" placeholder="Contraseña" required>
                          </div>
                          <br>
                        </div>
@@ -78,41 +86,49 @@
                        <div class="col-md-9">
 
                         <label>Tipo de Usuario</label>
-                        
+                        @if ($tipos=='U')
+                        <select class="form-control select2" name="TIPO_USUARIO" style="width: 100%;">
+                          <option  name="TIPO_USUARIO" value="U" selected>Usuario aplicación</option>
+                          <option  name="TIPO_USUARIO" value="A" >Administrador</option>
+                          <option name="TIPO_USUARIO" value="P" >Proveedor</option>
+                        </select>  
+                        @endif
                         @if ($tipos=='A')
-                        <select  class="form-control" name="TIPO_USUARIO" style="width: 100%;">
+                        <select  class="form-control select2" name="TIPO_USUARIO" style="width: 100%;">
                           <option  name="TIPO_USUARIO" value="U" >Usuario aplicación</option>
                           <option  name="TIPO_USUARIO" value="A" selected>Administrador</option>
                           <option name="TIPO_USUARIO" value="P">Proveedor</option>
                         </select>  
                         @endif
                         @if ($tipos=='P')
-                        <select class="form-control" name="TIPO_USUARIO" style="width: 100%;">
+                        <select class="form-control select2" name="TIPO_USUARIO" style="width: 100%;">
                           <option  name="TIPO_USUARIO" value="U">Usuario aplicación</option>
                           <option  name="TIPO_USUARIO" value="A" >Administrador</option>
                           <option name="TIPO_USUARIO" value="P" selected>Proveedor</option>
                         </select>  
                         @endif
-                        @if ($tipos=='U')
-                        <select class="form-control" name="TIPO_USUARIO" style="width: 100%;">
-                          <option  name="TIPO_USUARIO" value="U" selected>Usuario aplicación</option>
-                          <option  name="TIPO_USUARIO" value="A" >Administrador</option>
-                          <option name="TIPO_USUARIO" value="P" >Proveedor</option>
-                        </select>  
-                        @endif
-
-                       
-                        
-                      
                        <br>
 
                        </div>
                        </div>
                        </div>
               <div class="box-footer">
-                <button type ='button' class="btn btn-danger " 
-                onclick="location.href = '{{ URL::previous() }}'">
-                <span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                <div class="box-footer">
+                  @if($tipos=='A')
+                  <button type ='button' class="btn btn-danger " 
+                  onclick="location.href = '{{ Route('Usuarios.indexA') }}'">
+                  <span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                  @endif
+                  @if($tipos=='P')
+                  <button type ='button' class="btn btn-danger " 
+                  onclick="location.href = '{{ Route('Usuarios.indexP') }}'">
+                  <span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                  @endif
+                  @if($tipos=='U')
+                  <button type ='button' class="btn btn-danger " 
+                  onclick="location.href = '{{ Route('Usuarios.index') }}'">
+                  <span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                  @endif
                   <button type="submit" class="btn btn-primary pull-right">
                     <span class="glyphicon glyphicon-floppy-saved"></span>Guardar Usuario</button>
              </div>
